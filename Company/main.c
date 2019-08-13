@@ -70,8 +70,8 @@ void f3()
 	char *msg = build_packet(4, payload_fields, 0);
 	send_msg(msg, LAWIP, LAWPORT);
 	free(msg);
-	free_payload_fields(payload_fields);
-	free_payload_fields(R_is);
+	//free_payload_fields(payload_fields);
+	//free_payload_fields(R_is);
 
 	clean_up(); // close db
 }
@@ -94,10 +94,7 @@ void f11()
 {
 	printf("[Company] Write to BC step 12\n");
 	fprintf(stderr, "[Company] Doing query for data\n");
-	//start = clock();
-	//printf("C_START: %ld\n", start);
 
-	/* Call ethereum here, python */
 	//system("python3 lib/python/eth_calls/write_t.py company temp_data");
 
 	/* Get the start and end date from the payload fields
@@ -120,6 +117,8 @@ void f11()
 	for (int i = 0; i < count; i++)
 		push(_stack, A_i_to_query[i]);
 
+	// file for company to write, and enforcer to read 
+	// ( simulates sending file to the enforcer )
 	FILE *out_file = fopen("test_dummy.txt", "w");
 
 	int first_batch = 0;
@@ -150,16 +149,14 @@ void f11()
 			//fprintf(stderr, "\t[2>] %s batch: %d \n", t_name, j);
 			fflush(stdout);
 
-			printf("AAAAAAA\n");
 			batch = query_by_batch(j, t_name);
-			printf("BBBBBBB\n");
 
 			fwrite(batch, strlen(batch), 1, out_file);
 			free(batch);
 			clean_up();
 		}
 		//////////////////////////////////////////////////////////
-		free(t_name);
+		//free(t_name);
 	}
 
 	// clean up
@@ -169,12 +166,9 @@ void f11()
 	send_msg(msg, ENFORCERIP, ENFORCERPORT);
 	clean_up();
 	free(msg);
-	free_payload_fields(payload_fields);
-	free_payload_fields(A_i_to_query);
-	free_payload_fields(date_strings);
-	//end = clock();
-	//printf("C_END: %ld\n", end);
-	//printf("C_TIME: %f\n", ((double)(end - start) / CLOCKS_PER_SEC));
+	//free_payload_fields(payload_fields);
+	//free_payload_fields(A_i_to_query);
+	//free_payload_fields(date_strings);
 }
 
 /*
@@ -233,8 +227,8 @@ int main(int argc, char **argv)
 	sym_key_from_judge = malloc(33);
 
 	// redirect stdio to file
-	// dup_log_file = dup_logger_init("Company.log");
-	// dup2(dup_log_file,1);
+	//dup_log_file = dup_logger_init("Company.log");
+	//dup2(dup_log_file,1);
 
 	payload_fields = malloc(1024);
 	if (!payload_fields) {

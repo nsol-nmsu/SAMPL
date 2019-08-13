@@ -48,7 +48,7 @@ void f9()
 {
 	printf("[Enforcer] Write to BC step 10\n");
 
-	system("python3 lib/python/eth_calls/write_t.py enforcer test-data");
+	//system("python3 lib/python/eth_calls/write_t.py enforcer test-data");
 
 	char *msg = build_packet(11, payload_fields, 0);
 	send_msg(msg, COMPANYIP, COMPANYPORT);
@@ -67,13 +67,14 @@ void f13()
 
 	// char* file_name = "test-out.txt";
 	char *file_name = "test_dummy.txt";
+	//char *file_name = "../Company/test_dummy.txt";
 
 	start = clock();
 	printf("E_START: %ld\n", start);
 	verify_file(file_name);
-	end = clock();
-	printf("E_END: %ld\n", end);
-	printf("E_TIME: %f\n", ((double)(end - start) / CLOCKS_PER_SEC));
+	//end = clock();
+	//printf("E_END: %ld\n", end);
+	//printf("E_TIME: %f\n", ((double)(end - start) / CLOCKS_PER_SEC));
 
 	char *msg = build_packet(15, payload_fields, 0);
 	send_msg(msg, LAWIP, LAWPORT);
@@ -152,8 +153,8 @@ int main()
 	// f13();
 	large_file_hash = malloc(33); // weird
 
-	// dup_log_file = dup_logger_init("Enforcer.log");
-	// dup2(dup_log_file,1);
+	//dup_log_file = dup_logger_init("Enforcer.log");
+	//dup2(dup_log_file,1);
 
 	f_file = fopen("test-out.txt", "w");
 

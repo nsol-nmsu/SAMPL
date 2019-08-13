@@ -59,7 +59,7 @@ void f5()
 	strncpy(payload_fields[2], sym_key, 32);
 
 	printf("[Judge]    Write to BC, step 6\n");
-	system("python3 lib/python/eth_calls/write_t.py judge test-data-is-here");
+	//system("python3 lib/python/eth_calls/write_t.py judge test-data-is-here");
 
 	char *msg = build_packet(7, payload_fields, 0);
 	send_msg(msg, COMPANYIP, COMPANYPORT);
@@ -125,8 +125,8 @@ int main(int argc, char **argv)
 {
 	start_signals();
 
-	dup_log_file = dup_logger_init("Judge.log");
-	dup2(dup_log_file,1);
+	//dup_log_file = dup_logger_init("Judge.log");
+	//dup2(dup_log_file,1);
 
 	payload_fields = malloc(1024);
 	if (!payload_fields) {

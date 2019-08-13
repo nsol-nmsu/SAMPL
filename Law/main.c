@@ -61,7 +61,7 @@ void trigger_system() {}
 void f2()
 {
 	char *msg = build_packet(3, payload_fields, 0);
-	dump_packet(msg);
+	//dump_packet(msg);
 	send_msg(msg, COMPANYIP, COMPANYPORT);
 	free(msg);
 	free_payload_fields(payload_fields);
@@ -86,7 +86,7 @@ void f7()
 {
 	printf("[Law]      Write to BC step 8\n");
 
-	system("python3 lib/python/eth_calls/write_t.py law test_data");
+	//system("python3 lib/python/eth_calls/write_t.py law test_data");
 
 	memcpy(sym_key_from_judge, payload_fields[2], 32);
 	free(payload_fields[2]);
@@ -105,7 +105,7 @@ void f7()
 void f15()
 {
 
-	system("python3 lib/python/eth_calls/write_t.py law test-dta");
+	//system("python3 lib/python/eth_calls/write_t.py law test-dta");
 
 	printf("!!! Finished\n");
 	fprintf(stderr, "[*] Finished, logs should be written\n");
@@ -194,8 +194,8 @@ int main(int argc, char **argv)
 
 	/* some initializing for the entitiy */
 	start_signals();
-	dup_log_file = dup_logger_init("Law.log");
-	dup2(dup_log_file,1);
+	//dup_log_file = dup_logger_init("Law.log");
+	//dup2(dup_log_file,1);
 	sym_key_from_judge = malloc(33);
 	payload_fields = malloc(1024);
 	if (!payload_fields) {

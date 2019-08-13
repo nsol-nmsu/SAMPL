@@ -117,6 +117,7 @@ int verify_file(char *file_name)
 				printf("[*] Merkle root is NOT good\n");
 				fflush(stdout);
 			}
+
 			end = clock();
 			//double total = ((double)(end - start) / CLOCKS_PER_SEC);
 			//o_file = fopen("root_to_total.txt", "a");
@@ -130,8 +131,8 @@ int verify_file(char *file_name)
 			out_file = fopen("id_proof.txt", "w");
 			// decode before writing
 			// !!!
-			// base64_decode(fields[5],&decode_buffer,&decode_len);
-			// fwrite(decode_buffer,decode_len,1,out_file);
+			base64_decode(fields[5],&decode_buffer,&decode_len);
+			fwrite(decode_buffer,decode_len,1,out_file);
 			fwrite(fields[5], strlen(fields[5]), 1, out_file);
 			fclose(out_file);
 			free(decode_buffer);

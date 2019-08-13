@@ -284,7 +284,7 @@ char *query_by_batch(int batch_num, char *A_i)
 	p_len += strlen(id_proof);
 	p_len += 1;
 
-	char *to_return = (char*)malloc(p_len);
+	char *to_return = (char*)malloc(p_len+100);
 	if(!to_return) {
 		printf("Error with malloc for to_return in query_by_batch\n");
 	}
@@ -299,8 +299,8 @@ char *query_by_batch(int batch_num, char *A_i)
 	free(root_sig);
 	free(A_i_P_pub);
 	free(id_proof);
-	//free(hashes_list);
 	free(cont_list);
+	////free(hashes_list);
 
 	printf("FINISHED\n");
 	return to_return;

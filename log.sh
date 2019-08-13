@@ -6,19 +6,19 @@
 case $1 in
 	law)
 		echo "Law"
-		cat Law/Law.log
+		cat Law.log
 		;;
 	enf)
 		echo "enf"
-		cat Enforcer/Enforcer.log
+		cat Enforcer.log
 		;;
 	judge)
 		echo "judge"
-		cat Judge/Judge.log
+		cat Judge.log
 		;;
 	company)
 		echo "company"
-		cat Company/Company.log
+		cat Company.log
 		;;
 	clean)
 		truncate -s 0 Law/Law.log

@@ -10,7 +10,6 @@ void start_server(int port, void (*f)(int, struct header, char *), int *targets,
 				  int debug)
 {
 
-	printf("alskjdf;dsjfa;sj\n");
 	int listenfd, connfd;
 	struct sockaddr_in servaddr, cliaddr;
 	char buff[BUFF_SIZE];
