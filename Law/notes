@@ -1,0 +1,6 @@
+
+
+needs SR_names.txt
+- this is the list of names that the law will do
+for a query
+- this list of names needs to be valid names in the generated database

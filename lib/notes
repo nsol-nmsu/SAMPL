@@ -1,0 +1,22 @@
+lib is where common code is shared
+
+if any changes to this code occur, 
+recompile to make new object files
+by running ./build.sh
+if doing this, dont forget to compile all
+the entities code.
+
+
+[ notes for database ]
+[ what does the db need, query wise ]
+
+1. retrieve keys for a specific user ( FINISHED )
+2. retrieve merkle entries by user
+
+[ what needs to be done ]
+1. all the tables need to be defined
+2. database needs to be populated
+3. the last queries need to be written
+
+
+
