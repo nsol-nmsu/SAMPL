@@ -30,3 +30,4 @@ run-trial.sh
 trials.sh
 scripts/
 results/
+val-run.sh
