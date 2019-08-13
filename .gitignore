@@ -26,7 +26,7 @@ test.db-journal
 test_dummy.txt
 test-out.txt
 valgrind*
-run-trials.sh
-trails.sh
-script/
+run-trial.sh
+trials.sh
+scripts/
 results/
