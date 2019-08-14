@@ -19,19 +19,7 @@ int dup_logger_init(char *file_name)
 	return fp;
 }
 
-FILE *logger_init(char *file_name, char *attrs)
-{
-	FILE *fp = fopen(file_name, attrs);
-	return fp;
-}
 
-void LOG(FILE *fp, char *entry)
-{
-	if (!fp)
-		printf("Passed an emtpy file pointer to LOG\n");
-	else
-		fprintf(fp, "%s\n", entry);
-}
 
 void LOG_PACKET(FILE *fp, char *packet, char *additional)
 {

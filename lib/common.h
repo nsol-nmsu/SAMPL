@@ -1,3 +1,13 @@
+/*
+ * Some common traits to be shared
+ *
+ * When running SAMPL protocol on multiple machines,
+ * modify the port's and ip's here. Each entitiy knows to use
+ * the values provided here.
+ *
+ */
+
+
 #ifndef common_h
 #define common_h
 
@@ -12,25 +22,12 @@
 
 // IP'S
 
-// remote testing
-/*
-#define JUDGEIP "127.0.0.1"
-#define COMPANYIP "127.0.0.1"
-#define ENFORCERIP "127.0.0.1"
-#define LAWIP "127.0.0.1"
-*/
 
-// local testing
+// change me to run on different machines
 #define JUDGEIP "127.0.0.1"
 #define COMPANYIP "127.0.0.1"
 #define ENFORCERIP "127.0.0.1"
 #define LAWIP "127.0.0.1"
 
-// not needed
-struct args {
-	int port;
-	void (*func)();
-	char *targets;
-};
 
 #endif

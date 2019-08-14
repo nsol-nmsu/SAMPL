@@ -194,8 +194,8 @@ int main(int argc, char **argv)
 
 	/* some initializing for the entitiy */
 	start_signals();
-	//dup_log_file = dup_logger_init("Law.log");
-	//dup2(dup_log_file,1);
+	dup_log_file = dup_logger_init("Law.log");
+	dup2(dup_log_file,1);
 	sym_key_from_judge = malloc(33);
 	payload_fields = malloc(1024);
 	if (!payload_fields) {

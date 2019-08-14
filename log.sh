@@ -8,16 +8,16 @@ case $1 in
 		echo "Law"
 		cat Law.log
 		;;
-	enf)
-		echo "enf"
+	enforcer)
+		echo "Enforcer"
 		cat Enforcer.log
 		;;
 	judge)
-		echo "judge"
+		echo "Judge"
 		cat Judge.log
 		;;
 	company)
-		echo "company"
+		echo "Company"
 		cat Company.log
 		;;
 	clean)

@@ -8,7 +8,6 @@
 // message is header+payload
 void send_msg(char *msg, char *ip, int port)
 {
-
 	int sockfd;
 	struct sockaddr_in servaddr;
 
@@ -32,7 +31,7 @@ void send_msg(char *msg, char *ip, int port)
 // such as hash of file, and size of file
 // need to build custom headers and build the payloads here
 // a workflow_num is special for the enforcer
-// !!!!! send_file is hardcoded to enforcer for know !!!!!!!!
+// !!!!! send_file is hardcoded to enforcer for now !!!!!!!!
 void send_file(int workflow_num, char *file_name, char *ip, int port)
 {
 	printf("[Company] sending file\n");
@@ -40,7 +39,6 @@ void send_file(int workflow_num, char *file_name, char *ip, int port)
 	char *file_hash = hash_file(file_name);
 	printf("[company] File hash: %s\n", file_hash);
 
-	// u below
 	char *simple_packet = build_simple_packet(100, file_hash, 32);
 	send_msg(simple_packet, ENFORCERIP, ENFORCERPORT);
 	free(simple_packet);
@@ -74,7 +72,6 @@ void send_file(int workflow_num, char *file_name, char *ip, int port)
 		status = fread(data, CHUNK_SIZE, 1, fp);
 		data[CHUNK_SIZE] = '\0';
 		// fwrite(data,CHUNK_SIZE,1,t_file);
-		// u below
 		simple_packet = build_simple_packet(101, data, CHUNK_SIZE);
 		send_msg(simple_packet, ENFORCERIP, ENFORCERPORT);
 		free(simple_packet);
@@ -86,7 +83,6 @@ void send_file(int workflow_num, char *file_name, char *ip, int port)
 		status = fread(data, last_CHUNK_SIZE, 1, fp);
 		data[last_CHUNK_SIZE] = '\0';
 		// fwrite(data,last_CHUNK_SIZE,1,t_file);
-		// u below
 		simple_packet = build_simple_packet(101, data, last_CHUNK_SIZE);
 		send_msg(simple_packet, ENFORCERIP, ENFORCERPORT);
 		free(simple_packet);

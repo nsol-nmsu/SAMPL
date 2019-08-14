@@ -93,7 +93,7 @@ void f7()
 void f11()
 {
 	printf("[Company] Write to BC step 12\n");
-	fprintf(stderr, "[Company] Doing query for data\n");
+	//fprintf(stderr, "[Company] Doing query for data\n");
 
 	//system("python3 lib/python/eth_calls/write_t.py company temp_data");
 
@@ -227,8 +227,8 @@ int main(int argc, char **argv)
 	sym_key_from_judge = malloc(33);
 
 	// redirect stdio to file
-	//dup_log_file = dup_logger_init("Company.log");
-	//dup2(dup_log_file,1);
+	dup_log_file = dup_logger_init("Company.log");
+	dup2(dup_log_file,1);
 
 	payload_fields = malloc(1024);
 	if (!payload_fields) {

@@ -1,10 +1,23 @@
+/*
+ * Application layer specifics
+ *
+ * Custom defined header to facilitate communication
+ * between entities in the system
+ *
+ */
+
+
 #ifndef header_h
 #define header_h
 
 #include <stddef.h>
 
 /*
- * header structure, not set in stone...
+ * header structure: 
+ *
+ * workflow_number  :  which stage/step of the protocol
+ *
+ * fieldX_len       :  # of bytes in fieldX of packets payload
  */
 struct header {
 	char workflow_number[4];

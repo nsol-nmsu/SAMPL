@@ -153,8 +153,8 @@ int main()
 	// f13();
 	large_file_hash = malloc(33); // weird
 
-	//dup_log_file = dup_logger_init("Enforcer.log");
-	//dup2(dup_log_file,1);
+	dup_log_file = dup_logger_init("Enforcer.log");
+	dup2(dup_log_file,1);
 
 	f_file = fopen("test-out.txt", "w");
 

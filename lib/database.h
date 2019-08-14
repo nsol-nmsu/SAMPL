@@ -1,8 +1,9 @@
 /*
- * database access
+ * Database access helpers
  *
- * For now, is simple for testing.
- * Once is set, add larger features and more tables.
+ * Database access is primitive and queries are bare bones.
+ * Functionality includes only what was needed to accomplish the
+ * protocol.
  */
 
 #ifndef database_h
@@ -11,6 +12,9 @@
 #include <sqlite3.h>
 #include <stdio.h>
 
+/* enum used to help make queries more
+ * readable throughout.
+ */
 enum USER_ACCOUNT_FIELD {
 	USER_R_i = 1,
 	USER_A_i = 2,
@@ -29,11 +33,8 @@ enum MERKLE_field {
 };
 
 static sqlite3 *db;
-
 int open_db();
-
 void create_table();
-
 void insert();
 
 /* Use R_i as the key */
@@ -55,36 +56,49 @@ char *query_MERKLE_ENTRY(int merkle_field, char *A_i, int batch_number);
  * the A_i corresponding keys
  */
 
+/* query a given 
+ */
 char *query_by_batch(int batch_num, char *A_i);
 
-char *query_by_batch_and_date(int batch_num, int date, char *A_i);
 
+/* Used to check if a batch contains a complete merkle tree.
+ */
 int check_full_batch(int batch_number, char *A_i);
 
+
+/* Return the first batch number based on the data
+ */
 int get_first_num_batch_by_date(int date, char *A_i, int *is_full);
 
+
+/* Return the last batch number based on the data
+ */
 int get_last_num_batch_by_date(int date, char *A_i, int *is_full);
 
-char *query_by_date(int date, char *A_i);
 
+/* Get all the hashes of the merkle tree by the batch
+ * number
+ * returns: hashes of full merkle tree ( space delimited )
+ */
 char *query_all_hashes_by_batch(int batch_num, char *A_i);
 
+
+/* query all the enc_content of the merkle tree by
+ * the batch number
+ * returns: base64 encoded encrypted content of full 
+ * 		merkle tree ( space delimited )
+ */
 char *query_all_enc_cont_by_batch(int batch_num, char *A_i);
 
-char *query_batch_by_date(int date, char *A_i);
 
+/* close the db descriptor
+ */
 void clean_up();
 
+
+/* callback for sqlite3 query
+ */
 static int callback(void *data, int argc, char **argv, char **azColName);
 
-/*
- * the populate db call
- *
- * define all tables and their fields here,
- * then call this function to create and populate the
- * database file.
- *
- */
-void init_db();
 
 #endif

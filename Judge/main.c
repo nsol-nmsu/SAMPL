@@ -125,8 +125,8 @@ int main(int argc, char **argv)
 {
 	start_signals();
 
-	//dup_log_file = dup_logger_init("Judge.log");
-	//dup2(dup_log_file,1);
+	dup_log_file = dup_logger_init("Judge.log");
+	dup2(dup_log_file,1);
 
 	payload_fields = malloc(1024);
 	if (!payload_fields) {

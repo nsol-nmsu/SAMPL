@@ -1,11 +1,5 @@
 /*
  * This is the client portion of each entity
- *
- * Create a socket and send out the message,
- * clean/free all memory once finished.
- *
- *
- *
  */
 
 #ifndef client_h
@@ -29,10 +23,16 @@
 
 #include "common.h"
 
+/* msg = full packet ( including application level headers )
+ *
+ * Send a message to another entity.
+ * Each send_msg triggers the next event in the protocol to happen
+ */
 void send_msg(char *msg, char *ip, int port);
 
-// same as send message, but read chunks of a file
-// and send piece by piece
+/* A special routine for the company to use to send a completed
+ * file of data to the enforcer to verify
+ */
 void send_file(int workflow_num, char *file_name, char *ip, int port);
 
 #endif
