@@ -10,7 +10,6 @@ Judge/Judge
 Company/Company
 Enforcer/Enforcer
 Law/Law
-test.db
 names.txt*
 a.out
 Company.log
@@ -31,3 +30,4 @@ trials.sh
 scripts/
 results/
 val-run.sh
+dbstarter/test.db
