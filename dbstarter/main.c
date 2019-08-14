@@ -28,6 +28,8 @@ void insert_USER_ACCOUNT()
 	FILE *fp = fopen("names.txt", "r");
 	char *base64_sym_key;
 	size_t len, read;
+	char id_proof[4096], p_priv[1024], p_pub[1024], c;
+	FILE *ffp;
 
 	while ((read = getline(&name, &len, fp)) != -1) {
 
@@ -35,37 +37,35 @@ void insert_USER_ACCOUNT()
 		 * generate all zkp and write them out to read from c */
 		system("python3 python/gen.py");
 
-		char id_proof[4096], p_priv[1024], p_pub[1024], c;
-
 		/* id proof */
-		FILE *fp = fopen("id_proof.txt", "r");
-		while ((c = getc(fp)) != EOF) {
+		ffp = fopen("id_proof.txt", "r");
+		while ((c = getc(ffp)) != EOF) {
 			id_proof[i] = c;
 			i++;
 		}
 		id_proof[i] = '\0';
 		i = 0;
-		fclose(fp);
+		fclose(ffp);
 
 		/* private key */
-		fp = fopen("p_priv.txt", "r");
-		while ((c = getc(fp)) != EOF) {
+		ffp = fopen("p_priv.txt", "r");
+		while ((c = getc(ffp)) != EOF) {
 			p_priv[i] = c;
 			i++;
 		}
 		p_priv[i] = '\0';
 		i = 0;
-		fclose(fp);
+		fclose(ffp);
 
 		/* public key */
-		fp = fopen("p_pub.txt", "r");
-		while ((c = getc(fp)) != EOF) {
+		ffp = fopen("p_pub.txt", "r");
+		while ((c = getc(ffp)) != EOF) {
 			p_pub[i] = c;
 			i++;
 		}
 		p_pub[i] = '\0';
 		i = 0;
-		fclose(fp);
+		fclose(ffp);
 
 		/******************************************************/
 

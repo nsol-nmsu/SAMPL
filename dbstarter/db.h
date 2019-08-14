@@ -8,6 +8,9 @@
 
 #define MERKLE_SIZE 32
 
+/*************************************************
+ * Set the name of the generated DB here
+ ************************************************/
 char *db_name = "test.db";
 
 int open_db()
@@ -130,7 +133,6 @@ void query_merkle()
 
 void create_USER_ACCOUNT()
 {
-	printf("aslkdjfa;skdljf\n");
 	int rc = 0;
 	char *zErrMsg = 0;
 	char *sql_query = create_user_account;
