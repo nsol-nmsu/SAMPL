@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# for running local tests, company using a file to write, and
-# enforcer to read
+# for running local tests, company writes to a file, and
+# enforcer reads in the file to verify
 
+# When the tests are done, Enfocer will 'release' the lock, and delete
+# this file
 touch fin.lock
-
 
 
 function usage 
