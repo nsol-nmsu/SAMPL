@@ -61,6 +61,7 @@ char *get_root(char **hashes, int size)
 	return h[0];
 }
 
+
 char *get_siblings(char **target_hash_list, char **hashes)
 {
 	char **t = target_hash_list;
@@ -167,6 +168,8 @@ char *get_siblings(char **target_hash_list, char **hashes)
 	return to_return;
 }
 
+/* TODO
+ */
 char *get_root_from_siblings(char **target_hash_list, char **siblings)
 {
 	// get the next level of hashes from the target_hash_list

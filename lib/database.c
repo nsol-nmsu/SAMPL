@@ -11,7 +11,7 @@
  */
 int open_db()
 {
-	db; // defined in database.h
+	db; // defined in db.h
 	int rc = 0;
 	char *zErrMsg = 0;
 
@@ -68,10 +68,8 @@ char *query_USER_ACCOUNT_R_i(int user_field, char *R_i)
 	size_t res_size;
 	rc = sqlite3_prepare_v2(db, sql_query, query_length, &sql_statement,
 							&zErrMsg);
-	// printf("ahhh %d\n",rc);
 
 	if (rc == SQLITE_OK) {
-		// printf("[in query] sql success for query\n");
 		if ((rc = sqlite3_step(sql_statement)) == SQLITE_ROW) {
 			res_size = strlen(sqlite3_column_text(sql_statement, 0));
 			result = (char*)malloc(res_size + 1);
@@ -88,7 +86,6 @@ char *query_USER_ACCOUNT_R_i(int user_field, char *R_i)
 		printf("[sql rc error status] %d\n", rc);
 	}
 	return result;
-	// printf("[Debug] %s\n",result);
 	free(sql_query);
 }
 
@@ -141,7 +138,6 @@ char *query_USER_ACCOUNT(int user_field, char *A_i)
 	/* Add the where clause to specify what user, by A_i */
 	sprintf(sql_query, "%s WHERE A_i = '%s'", s_q, A_i);
 	size_t query_length = strlen(sql_query);
-	// printf("the query:\n%s\n",sql_query);
 
 	/* Copy the retrieved data, and return
 	 *  ie. return the sym_key for the A_i that was passed
@@ -151,7 +147,6 @@ char *query_USER_ACCOUNT(int user_field, char *A_i)
 	rc = sqlite3_prepare_v2(db, sql_query, query_length, &sql_statement,
 							&zErrMsg);
 	if (rc == SQLITE_OK) {
-		// printf("[in query] sql success for query\n");
 		if ((rc = sqlite3_step(sql_statement)) == SQLITE_ROW) {
 			res_size = strlen(sqlite3_column_text(sql_statement, 0));
 			result = (char*)malloc(res_size + 1);
@@ -180,7 +175,6 @@ char *query_all_hashes_by_batch(int batch_num, char *A_i)
 			"batch_number = '%d';",
 			A_i, batch_num);
 	size_t query_length = strlen(sql_query);
-	// printf("the query:\n%s\n",sql_query);
 
 	char *result;
 	size_t res_size;
@@ -190,7 +184,6 @@ char *query_all_hashes_by_batch(int batch_num, char *A_i)
 	rc = sqlite3_prepare_v2(db, sql_query, query_length, &sql_statement,
 							&zErrMsg);
 	if (rc == SQLITE_OK) {
-		// printf("[in query for all_hashes] sql success for query\n");
 		while ((rc = sqlite3_step(sql_statement)) == SQLITE_ROW) {
 			result = (char *)sqlite3_column_text(sql_statement, 0);
 			push(_stack, result);
@@ -216,7 +209,6 @@ char *query_all_enc_cont_by_batch(int batch_num, char *A_i)
 			"SELECT enc_content, date FROM DATA_ENTRY WHERE A_i = '%s' AND " \
 			"batch_number = '%d';", A_i, batch_num);
 	size_t query_length = strlen(sql_query);
-	//printf("the query:\n%s\n",sql_query);
 
 	char *result;
 	char *concat_res;
@@ -229,14 +221,11 @@ char *query_all_enc_cont_by_batch(int batch_num, char *A_i)
 							&zErrMsg);
 	if (rc == SQLITE_OK) {
 		printf("[sql query] good status from get all enc content\n");
-		// printf("[in query for all_hashes] sql success for query\n");
 		while ((rc = sqlite3_step(sql_statement)) == SQLITE_ROW) {
 			result = (char *)sqlite3_column_text(sql_statement, 0);
-			//printf("[result] %s\n",result);
 			concat_res = (char*)malloc(strlen(result)+100);
 			date = sqlite3_column_int(sql_statement,1);
 			sprintf(concat_res,"%s%d",result,date);
-			//printf("[debug in database.c] %s\n",concat_res);
 			push(_stack, concat_res);
 			//free(result);
 			free(concat_res);
@@ -249,7 +238,6 @@ char *query_all_enc_cont_by_batch(int batch_num, char *A_i)
 	char *hashes_list = convert_to_string(_stack, 0);
 	free(sql_query);
 	free_stack(_stack);
-	//printf("[hashes_list debug in database.c] %s\n",hashes_list);
 	return hashes_list;
 }
 
@@ -271,7 +259,6 @@ char *query_by_batch(int batch_num, char *A_i)
 	char* cont_list = query_all_enc_cont_by_batch(batch_num,A_i);
 
 
-	//printf("[company query database.c] finished with gathering data \n");
 
 	// get full size
 	size_t p_len = 0;
@@ -300,7 +287,7 @@ char *query_by_batch(int batch_num, char *A_i)
 	free(A_i_P_pub);
 	free(id_proof);
 	free(cont_list);
-	////free(hashes_list);
+	//free(hashes_list);
 
 	printf("FINISHED\n");
 	return to_return;
@@ -394,7 +381,7 @@ int get_first_num_batch_by_date(int date, char *A_i, int *is_full)
 			return sqlite3_column_int(sql_statement, 0);
 		}
 		else {
-			printf("Errorororor\n");
+			printf("Error\n");
 			return -1;
 		}
 	}
@@ -433,7 +420,6 @@ char *query_MERKLE_ENTRY(int merkle_field, char *A_i, int batch_number)
 	sprintf(sql_query, "%s WHERE name = '%s' AND batch_number = %d;", s_q, A_i,
 			batch_number);
 	size_t query_length = strlen(sql_query);
-	// printf("the query:\n%s\n",sql_query);
 
 	/* Copy the retrieved data, and return
 	 *  ie. return the sym_key for the A_i that was passed
@@ -443,11 +429,9 @@ char *query_MERKLE_ENTRY(int merkle_field, char *A_i, int batch_number)
 	rc = sqlite3_prepare_v2(db, sql_query, query_length, &sql_statement,
 							&zErrMsg);
 	if (rc == SQLITE_OK) {
-		// printf("[in query] sql success for query\n");
 		if ((rc = sqlite3_step(sql_statement)) == SQLITE_ROW) {
 			res_size = strlen(sqlite3_column_text(sql_statement, 0));
 			result = (char*)malloc(res_size + 1);
-			// strncpy(result,sqlite3_column_text(sql_statement,0),res_size);
 			memcpy(result, sqlite3_column_text(sql_statement, 0), res_size);
 			result[res_size] = '\0';
 		}
