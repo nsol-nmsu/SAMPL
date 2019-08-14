@@ -1,28 +1,12 @@
-
-
-/*
- * notes on what to work on here
- *
- * Thread/fork the server.
- *  copy the memory to newly allocated blocks to
- *  avoid memory leaks, then free once fork is finished
- *
- *
- */
-
 /*
  * Server code for all entities
  *
  * Spin up their server component, given their
  * unique needs
  *
- * can pass in buffers needed to hold some memory
- * can pass 'callback' funtions and function pointers to handle routines
- * can pass port numbers
- *
- *
- *
- *
+ * The server will retrieve the packet from a sender
+ * and extract the workflow_number from the header, then
+ * call the specified callback function with this workflow number
  */
 
 #ifndef server_h
@@ -47,9 +31,19 @@
 #include "common.h"
 #include "header.h"
 
+/* Start the server component of the entitiy
+ *
+ * A function pointer needs to be passed to handle their portion of the
+ * protocol
+ *
+ * target: Is what workflow numbers the caller is able to handle
+ *
+ */
 void start_server(int port, void (*f)(int, struct header, char *), int *targets,
 				  int debug);
 
+/* Used internally by the server component to extract the workflow_number
+ */
 int parse_input(int id, int *targets);
 
 #endif

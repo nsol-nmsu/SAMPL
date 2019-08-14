@@ -20,8 +20,7 @@ char *build_packet(int workflow_number, char **payload_fields, int reset)
 	for (int i = 0; i < 4; i++) {
 		if (payload_fields[i] != NULL) {
 			str_len[i] = strlen(payload_fields[i]);
-		}
-		else {
+		} else {
 			str_len[i] = 0;
 		}
 		total_length += str_len[i];
@@ -51,7 +50,6 @@ char *build_packet(int workflow_number, char **payload_fields, int reset)
 		exit(0);
 	}
 
-	// packet is built correctly, at least looks correct
 	sprintf(packet, "%s%s", header, payload);
 	free(header);
 	free(payload);

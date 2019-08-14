@@ -58,10 +58,10 @@ int free_stack(stack s)
 	return 1;
 }
 
-// !!! no error checking after malloc, put this in
+
+// No error checking after malloc, assuming all is good
 char *convert_to_string(stack s, int order)
 {
-
 	char *string_res = (char*)malloc(2048);
 	memset(string_res, '\0', 2048);
 	char *pop_res;
@@ -82,11 +82,12 @@ char *convert_to_string(stack s, int order)
 		free(pop_res);
 	}
 
-	// tokenize and reverse here
+	// tokenize and reverse here ( not implemented )
 
 	return string_res;
 }
 
+// use comma delimiter instead of space ( not used )
 char *convert_to_string_no_space(stack s, int order)
 {
 

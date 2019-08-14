@@ -10,7 +10,6 @@
 // do not alter the string passed in
 char **s_tokenize(const char *s, int *count)
 {
-
 	char *string = malloc(strlen(s) + 1);
 	strcpy(string, s);
 

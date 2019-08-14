@@ -1,6 +1,6 @@
 # SAMPL
 
-- SAMPL code base
+- Implementation of SAMPL
 - Each entity in the network has their own working directory.
 
 ## Quick Start

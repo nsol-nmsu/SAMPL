@@ -9,7 +9,6 @@
 void start_server(int port, void (*f)(int, struct header, char *), int *targets,
 				  int debug)
 {
-
 	int listenfd, connfd;
 	struct sockaddr_in servaddr, cliaddr;
 	char buff[BUFF_SIZE];
@@ -17,6 +16,7 @@ void start_server(int port, void (*f)(int, struct header, char *), int *targets,
 	if ((listenfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 		printf("Error creating socket\n");
 	}
+
 	memset(&servaddr, '\0', sizeof(servaddr));
 	servaddr.sin_family = AF_INET;
 	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -25,6 +25,7 @@ void start_server(int port, void (*f)(int, struct header, char *), int *targets,
 	if ((bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr))) < 0) {
 		printf("Error with bind\n");
 	}
+
 	if ((listen(listenfd, 5)) < 0) {
 		printf("error with listen\n");
 	}
