@@ -31,3 +31,4 @@ scripts/
 results/
 val-run.sh
 dbstarter/test.db
+backup/

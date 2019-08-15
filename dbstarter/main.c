@@ -244,6 +244,7 @@ void insert_DATA_ENTRY_and_MERKLE_ENTRY(size_t num_entries)
 		for (int j = 0; j < gen_stats.number_of_days; j++) {
 			//E_PER_DAY = rand() % 20 + 22; // rand between 22 and 42
 			E_PER_DAY = 32;
+			//E_PER_DAY = 35;
 
 			/* loop how many entries per day */
 			for (int i = 0; i < E_PER_DAY; i++) {

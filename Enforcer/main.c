@@ -69,12 +69,8 @@ void f13()
 	char *file_name = "test_dummy.txt";
 	//char *file_name = "../Company/test_dummy.txt";
 
-	start = clock();
-	printf("E_START: %ld\n", start);
 	verify_file(file_name);
-	//end = clock();
-	//printf("E_END: %ld\n", end);
-	//printf("E_TIME: %f\n", ((double)(end - start) / CLOCKS_PER_SEC));
+	fprintf(stderr,"[Enforcer] Finished verifying the file\n");
 
 	char *msg = build_packet(15, payload_fields, 0);
 	send_msg(msg, LAWIP, LAWPORT);

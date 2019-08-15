@@ -72,7 +72,7 @@ int verify_file(char *file_name)
 
 		// start new test
 		case '[':
-			printf("[*] Starting process of ");
+			//printf("[*] Starting process of ");
 			index = 0;
 			i = 0;
 			break;
@@ -175,7 +175,7 @@ int verify_file(char *file_name)
 	}
 
 	fclose(fp);
-	printf("COUNTER: %ld\n", counter);
+	//printf("COUNTER: %ld\n", counter);
 	free(fields[0]);
 	free(fields[1]);
 	free(fields[2]);

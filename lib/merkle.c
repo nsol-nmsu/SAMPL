@@ -64,6 +64,7 @@ char *get_root(char **hashes, int size)
 
 char *get_siblings(char **target_hash_list, char **hashes)
 {
+	fprintf(stderr,"[ Starting in get siblings] \n");
 	char **t = target_hash_list;
 	int c_1 = 0, c_2 = 0;
 
@@ -165,6 +166,7 @@ char *get_siblings(char **target_hash_list, char **hashes)
 		sprintf(to_return, "%s%s%s", front, parent_string, converted_stack);
 	}
 
+	fprintf(stderr,"[ Finished in get siblings ]\n");
 	return to_return;
 }
 

@@ -56,9 +56,22 @@ char *query_MERKLE_ENTRY(int merkle_field, char *A_i, int batch_number);
  * the A_i corresponding keys
  */
 
-/* query a given 
+/* Get all the encrypted content of a batch
+ * ! Ignores if the batch consists of a full merkle tree
+ * * To query only the relevent data from the batch that
+ * belongs to the SO, user query_by_batch_notfull
  */
 char *query_by_batch(int batch_num, char *A_i);
+
+/* Query only the relevent content that falls under the
+ * SO.
+ * This function will utilize the get_siblings, and return
+ * a properly serialized c string with relevant information
+ * and the sibling hashes in the merkle tree so the root
+ * hash can be recreated with the subset of data
+ *
+ */
+char *query_by_batch_notfull(int batch_num, char *A_i, int target_date);
 
 
 /* Used to check if a batch contains a complete merkle tree.
@@ -89,6 +102,12 @@ char *query_all_hashes_by_batch(int batch_num, char *A_i);
  * 		merkle tree ( space delimited )
  */
 char *query_all_enc_cont_by_batch(int batch_num, char *A_i);
+
+
+char *query_all_hashes_by_batch_exact(int batch_num, char *A_i, int target_date);
+
+
+char *query_all_enc_cont_by_batch_exact(int batch_num, char *A_i, int target_date);
 
 
 /* close the db descriptor

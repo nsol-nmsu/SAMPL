@@ -89,6 +89,10 @@ void f7()
  * Write 12 to blockchain
  * Send 13 to Enforcer
  * query large data here
+ *
+ * Currently set to simulate sending the file to the enforcer,
+ * where right now it just writes out the file and notifies the enforcer
+ * it is available to read.
  */
 void f11()
 {
@@ -126,8 +130,8 @@ void f11()
 
 	printf("Query for batches, %d -> %d\n", first_batch, last_batch);
 	
-	// used ??
-	int is_full = 0; //  merkle full?  1 == full :: 0 == not
+	int start_is_full = 0; //  merkle full?  1 == full :: 0 == not
+	int end_is_full = 0; //  merkle full?  1 == full :: 0 == not
 
 	// loop all users, then loop each batch in range
 
@@ -136,8 +140,11 @@ void f11()
 	char *batch;
 	for (int i = 0; i < count; i++) {
 		t_name = pop(_stack);
-		first_batch = get_first_num_batch_by_date(start_date, t_name, &is_full);
-		last_batch = get_last_num_batch_by_date(end_date, t_name, &is_full);
+		first_batch = get_first_num_batch_by_date(start_date, t_name, &start_is_full);
+		last_batch = get_last_num_batch_by_date(end_date, t_name, &end_is_full);
+
+		fprintf(stderr,"[is_full first] %d\n",start_is_full);
+		fprintf(stderr,"[is_full last]  %d\n",end_is_full);
 
 		printf("[C Query] %s [batches] first: %d last: %d\n", t_name,
 			   first_batch, last_batch);
@@ -149,7 +156,23 @@ void f11()
 			//fprintf(stderr, "\t[2>] %s batch: %d \n", t_name, j);
 			fflush(stdout);
 
-			batch = query_by_batch(j, t_name);
+			/* Since surveillance is in time period T+n - T, the only
+			 * not full batches will be the first batch, or the last batch.
+			 * Even if a batch in the middle consists of two or more dates, it
+			 * will fall under the SO time period. 
+			 */
+			if(j == first_batch && !start_is_full) {
+				fprintf(stderr,"[!] special case for not full first!\n");
+				batch = query_by_batch_notfull(j,t_name,start_date);
+			} else if (j == last_batch && !end_is_full) {
+				fprintf(stderr,"[!] special case for not full last!\n");
+				batch = query_by_batch_notfull(j,t_name,end_date);
+			} else {
+				fprintf(stderr,"[!] Normal batch query\n");
+				batch = query_by_batch(j, t_name);
+			}
+
+			//batch = query_by_batch(j, t_name);
 
 			fwrite(batch, strlen(batch), 1, out_file);
 			free(batch);
