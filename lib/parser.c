@@ -114,7 +114,7 @@ int verify_file(char *file_name)
 				fprintf(stderr,"[[]] %s %s\n",hash_cont[i],rev_tokens[i]);
 			}
 
-			for(int i = NUM; i < count; i++) {
+			for(int i = NUM+1; i < count; i++) {
 				hash_cont[i] = rev_tokens[i];
 			}
 

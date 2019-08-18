@@ -174,7 +174,6 @@ char *get_siblings(char **target_hash_list, char **hashes)
 
 char *get_root_from_siblings(char **target_hash_list, int num_target)
 {
-
 	fprintf(stderr,"=================\n");
 	char **t = target_hash_list;
 	while(*t) {
