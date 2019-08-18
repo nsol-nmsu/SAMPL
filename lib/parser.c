@@ -27,6 +27,7 @@ int verify_file(char *file_name)
 	fields[3] = malloc(4096);
 	fields[4] = malloc(4096);
 	fields[5] = malloc(4096);
+	fields[6] = malloc(4096);
 
 	size_t counter = 0;
 
@@ -40,7 +41,7 @@ int verify_file(char *file_name)
 	char c;
 	int index = 0;
 	int i = 0;
-	int count;
+	int count = 0;
 	char **rev_tokens;
 	char **enc_cont_list;
 	char **hash_cont;
@@ -49,6 +50,7 @@ int verify_file(char *file_name)
 	size_t decode_len;
 	unsigned char *decode_buffer;
 	FILE *out_file;
+	int NUM = 0;
 
 	/* Process the field char by char until reached end of segment.
 	 * The file is delimited by '!', so each section is unique.
@@ -81,7 +83,9 @@ int verify_file(char *file_name)
 		case ']':
 			counter++;
 			printf("%s\n", fields[2]);
-
+	
+			NUM = atoi(fields[6]);
+			fprintf(stderr,"[*******] %d\n",NUM);
 
 			// enc_cont is the second field of the serialized batch
 			enc_cont_list = s_tokenize(fields[1],&count);
@@ -91,25 +95,44 @@ int verify_file(char *file_name)
 			// enough space to hold 64 char*
 			rev_tokens = malloc(4096); 
 
-			for (int i = 31, j = 0; i >= 0; i--, j++) 
+			fprintf(stderr,"*****  %d\n",count);
+			for (int i = count-1, j = 0; i >= 0; i--, j++) {
+				fprintf(stderr,"[enc cont list] %s\n",enc_cont_list[i]);
 				rev_tokens[j] = enc_cont_list[i]; //hash_list[i];
+			}
 
 			// terminate the list of content
-			rev_tokens[32] = NULL;
+			rev_tokens[NUM] = NULL;
 
 			// now that have content list, need to create hash of all content
 			hash_cont = malloc(4096);
 
-			for(int i = 0; i <= 31; i++) 
+			
+			// only hash the encrypted content
+			for(int i = 0; i <= NUM-1; i++) {
 				hash_cont[i] = hash(rev_tokens[i]);
-			
-			
-			hash_cont[32] = '\0'; 
+				fprintf(stderr,"[[]] %s %s\n",hash_cont[i],rev_tokens[i]);
+			}
+
+			for(int i = NUM; i < count; i++) {
+				hash_cont[i] = rev_tokens[i];
+			}
+
+			//hash_cont[NUM] = '\0'; 
+			hash_cont[count] = '\0';
+
+			for(int i = 0; i < count; i++) {
+				fprintf(stderr,"[[]]() %s\n",hash_cont[i]);
+			}
 			
 			/* with the hashes recreated from the encrypted content,
 			 * calculate the root hash of the merkle tree
 			 */
-			tree_root = get_root(hash_cont, 32);
+			if(NUM == 32) {
+				tree_root = get_root(hash_cont, 32);
+			} else if(NUM < 32) {
+				tree_root = get_root_from_siblings(hash_cont,NUM);
+			}
 
 			// verify the root hash is good
 			printf("\n=============\n=============\n");
@@ -152,7 +175,7 @@ int verify_file(char *file_name)
 			system("python3 lib/python/verify.py");
 
 			// reset the fields for the next batch
-			for (int i = 0; i < 6; i++) 
+			for (int i = 0; i <= 6; i++) 
 				memset(fields[i], '\0', 4096);
 
 			free(rev_tokens);

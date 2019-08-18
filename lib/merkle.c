@@ -128,7 +128,7 @@ char *get_siblings(char **target_hash_list, char **hashes)
 
 	if (alignment == 0) {
 		// set the front
-		sprintf(front, "[%d]", c_1);
+		//sprintf(front, "{%d}", c_1);
 
 		// get the targets from target_hash_list
 		for (int i = c_1 - 1; i >= 0; i--)
@@ -137,19 +137,20 @@ char *get_siblings(char **target_hash_list, char **hashes)
 		// get the parents of the next level = siblings
 		while (c_2 > (c_2 + 1) / 2) {
 			sprintf(parent, "%s%s", hashes[c_2--], hashes[c_2--]);
-			// p_hash = hash(parent);
+			p_hash = hash(parent);
 			// printf("%s\n",p_hash);
-			push(_stack, parent);
+			//push(_stack, parent);
+			push(_stack,p_hash);
 		}
 		parent_string = convert_to_string(_stack, 0);
 		converted_stack = convert_to_string(_target_stack, 0);
-		sprintf(to_return, "%s%s%s", front, converted_stack, parent_string);
+		sprintf(to_return, "%s%s", converted_stack, parent_string);
 	}
 	else if (alignment == 1) {
 
-		sprintf(front, "[-%d]", c_1);
+		//sprintf(front, "[-%d]", c_1);
 
-		printf("[debug] o_c_1: %d\n", o_c_1);
+		//printf("[debug] o_c_1: %d\n", o_c_1);
 		for (int i = o_c_1; i >= !(o_c_1 % 2); i--) {
 			// printf("tt: %s\n",target_hash_list[i]);
 			push(_target_stack, target_hash_list[i]);
@@ -163,17 +164,48 @@ char *get_siblings(char **target_hash_list, char **hashes)
 		}
 		parent_string = convert_to_string(_stack, 0);
 		converted_stack = convert_to_string(_target_stack, 0);
-		sprintf(to_return, "%s%s%s", front, parent_string, converted_stack);
+		sprintf(to_return, "%s%s", parent_string, converted_stack);
 	}
 
 	fprintf(stderr,"[ Finished in get siblings ]\n");
 	return to_return;
 }
 
-/* TODO
- */
-char *get_root_from_siblings(char **target_hash_list, char **siblings)
+
+char *get_root_from_siblings(char **target_hash_list, int num_target)
 {
-	// get the next level of hashes from the target_hash_list
-	// then calculate as normal using the siblings
+
+	fprintf(stderr,"=================\n");
+	char **t = target_hash_list;
+	while(*t) {
+		fprintf(stderr,"%s\n",*t);
+		t++;
+	}
+	fprintf(stderr,"=================\n");
+
+	int n_t = (num_target % 2) ? num_target - 1 : num_target;
+	n_t /= 2;
+	fprintf(stderr,"$$$$$$ %d\n",n_t);
+
+	char *con = malloc(4098);
+	char **hashed_list = malloc(4098);
+	char *hashed;
+	int x = 0;
+	for(int i = 0; i < n_t; i+=2) {
+		sprintf(con,"%s%s",target_hash_list[i],target_hash_list[i+1]);
+		hashed = hash(con);
+		hashed_list[x] = malloc(33);
+		strncpy(hashed_list[x++],hashed,33);
+	}
+
+	for(int i = n_t*2; i < 16; i++) {
+		fprintf(stderr,"%d aaaaaaaaaaaaa\n",i);
+		hashed_list[x] = malloc(33);
+		strncpy(hashed_list[x++],target_hash_list[i],33);
+	}
+
+	char *root = get_root(hashed_list,16);
+	fprintf(stderr,"ahsdlfsdjf\n");
+	return root;
+
 }

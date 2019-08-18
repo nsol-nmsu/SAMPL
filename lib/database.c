@@ -243,7 +243,7 @@ char *query_all_enc_cont_by_batch(int batch_num, char *A_i)
 }
 
 
-char *query_all_enc_cont_by_batch_exact(int batch_num, char *A_i, int target_date)
+char *query_all_enc_cont_by_batch_exact(int batch_num, char *A_i, int target_date, int *num)
 {
 	int rc = 0;
 	sqlite3_stmt *sql_statement;
@@ -272,8 +272,10 @@ char *query_all_enc_cont_by_batch_exact(int batch_num, char *A_i, int target_dat
 			concat_res = (char*)malloc(strlen(result)+100);
 			date = sqlite3_column_int(sql_statement,1);
 			sprintf(concat_res,"%s%d",result,date);
-			if(target_date == date)
+			if(target_date == date) {
 				push(_stack, concat_res);
+				*num = *num + 1;
+			}
 			//free(result);
 			free(concat_res);
 		}
@@ -365,8 +367,8 @@ char *query_by_batch(int batch_num, char *A_i)
 		printf("Error with malloc for to_return in query_by_batch\n");
 	}
 	
-	sprintf(to_return, "[%s!%s!%s!%s!%s!%s!]", root_hash, cont_list, A_i,
-				root_sig, A_i_P_pub, id_proof);
+	sprintf(to_return, "[%s!%s!%s!%s!%s!%s!%d]", root_hash, cont_list, A_i,
+				root_sig, A_i_P_pub, id_proof, 32);
 
 	free(root_hash);
 	free(root_sig);
@@ -385,8 +387,10 @@ char *query_by_batch_notfull(int batch_num, char *A_i, int target_date)
 	char *A_i_P_pub = query_USER_ACCOUNT(USER_P_pub, A_i);
 	char *id_proof = query_USER_ACCOUNT(USER_id_proof, A_i);
 
+	int num = 0;
+
 	/* The subset of encrypted content that is valid under the SO */
-	char *content_exact = query_all_enc_cont_by_batch_exact(batch_num,A_i,target_date);
+	char *content_exact = query_all_enc_cont_by_batch_exact(batch_num,A_i,target_date,&num);
 
 	/* Get the full list of HASHES to use to get the siblings */
 	char *cont_list_full = query_all_hashes_by_batch(batch_num,A_i);
@@ -404,10 +408,20 @@ char *query_by_batch_notfull(int batch_num, char *A_i, int target_date)
 	/* Get the siblings using the subset */
 	char *siblings = get_siblings(sep_sub_list,sep_list);
 
+	/* Build special section here for enforcer to parse */
+	size_t n_len = strlen(content_exact) + strlen(siblings) + 1;
+
+	char *n_sec = malloc(n_len+100);
+
+	// special delimiter for not full batch
+	sprintf(n_sec,"%s%s",siblings,content_exact);
+
+	//fprintf(stderr,"[**] %s\n",n_sec);
+	
 	// get full size
 	size_t p_len = 0;
 	p_len += strlen(root_hash);
-	p_len += strlen(cont_list_full);
+	p_len += strlen(n_sec);
 	p_len += strlen(A_i);
 	p_len += strlen(root_sig);
 	p_len += strlen(A_i_P_pub);
@@ -420,14 +434,17 @@ char *query_by_batch_notfull(int batch_num, char *A_i, int target_date)
 	}
 	
 	// !!!
-	sprintf(to_return, "[%s!%s!%s!%s!%s!%s!]", root_hash, cont_list_full, A_i,
-				root_sig, A_i_P_pub, id_proof);
+	sprintf(to_return, "[%s!%s!%s!%s!%s!%s!%d]", root_hash, n_sec, A_i,
+				root_sig, A_i_P_pub, id_proof, num);
+
+	//fprintf(stderr,"[to_return] %s\n",to_return);
 
 	free(root_hash);
 	free(root_sig);
 	free(A_i_P_pub);
 	free(id_proof);
 	free(cont_list_full);
+	free(n_sec);
 
 	return to_return;
 }

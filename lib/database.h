@@ -107,7 +107,7 @@ char *query_all_enc_cont_by_batch(int batch_num, char *A_i);
 char *query_all_hashes_by_batch_exact(int batch_num, char *A_i, int target_date);
 
 
-char *query_all_enc_cont_by_batch_exact(int batch_num, char *A_i, int target_date);
+char *query_all_enc_cont_by_batch_exact(int batch_num, char *A_i, int target_date, int *num);
 
 
 /* close the db descriptor

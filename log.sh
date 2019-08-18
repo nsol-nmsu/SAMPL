@@ -21,10 +21,11 @@ case $1 in
 		cat Company.log
 		;;
 	clean)
-		truncate -s 0 Law/Law.log
-		truncate -s 0 Enforcer/Enforcer.log
-		truncate -s 0 Judge/Judge.log
-		truncate -s 0 Company/Company.log
+		truncate -s 0 Law.log
+		truncate -s 0 Enforcer.log
+		truncate -s 0 Judge.log
+		truncate -s 0 Company.log
+		echo "logs reset"
 		;;
 	*)
 esac

@@ -210,6 +210,8 @@ void insert_DATA_ENTRY_and_MERKLE_ENTRY(size_t num_entries)
 	int i;
 	int z;
 	unsigned char sig[4096];
+	int enc_len = 0;
+	int set_flag = 0;
 
 	srand(time(0));
 
@@ -243,8 +245,8 @@ void insert_DATA_ENTRY_and_MERKLE_ENTRY(size_t num_entries)
 		/* loop the number of days */
 		for (int j = 0; j < gen_stats.number_of_days; j++) {
 			//E_PER_DAY = rand() % 20 + 22; // rand between 22 and 42
-			E_PER_DAY = 32;
-			//E_PER_DAY = 35;
+			//E_PER_DAY = 32;
+			E_PER_DAY = 35;
 
 			/* loop how many entries per day */
 			for (int i = 0; i < E_PER_DAY; i++) {
@@ -256,12 +258,19 @@ void insert_DATA_ENTRY_and_MERKLE_ENTRY(size_t num_entries)
 
 				// encode enc_content
 				base64_encode(enc_cont,ct_len,&b64);
-				b64[strlen(b64)-1] = '\0';
 
+				if(!set_flag) {
+					enc_len = strlen(b64) - 1;
+					set_flag = 1;
+				}
+
+				b64[enc_len] = '\0';
 
 				// encode enc_content again for later
 				base64_encode(enc_cont,ct_len,&b64_enc_cont);
-				b64_enc_cont[strlen(b64_enc_cont)-1] = '\0';
+				b64_enc_cont[enc_len] = '\0';
+
+				printf("[*] %d  \n",enc_len);
 
 				temp = malloc(strlen(b64)+1);
 				sprintf(temp,"%s%d",b64,date);
