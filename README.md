@@ -44,7 +44,7 @@ make
 
 - Now run test scenarion on the local machine
 ```
-./val-run.sh { # of people under survaillance } { # of days of survaillance } {
+./run.sh { # of people under survaillance } { # of days of survaillance } {
 offset of people to run same tests with different subset of people }
 ```
 - The Enforcer entity logs show the result of the zero knowledge proof
