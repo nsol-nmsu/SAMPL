@@ -26,7 +26,6 @@ unsigned char *sym_key_from_judge;
 int dup_log_file;
 FILE *log_file;
 
-clock_t start, end; // timers
 
 /*************************
  * Routines to handle the
