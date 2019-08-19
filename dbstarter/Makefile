@@ -9,7 +9,6 @@ TARGET=dbstarter
 
 all: $(SRCS) $(OBJS)
 	$(CC) $(SRCS) $(CFLAGS) $(OBJS) -o $(TARGET) 
-	rm test.db
 
 
 clean:

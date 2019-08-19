@@ -19,11 +19,14 @@ cd ..
 ./rebuild.sh
 ```
 
-- A Small sample database has been provided, as well as a short list of random
-  names to build a new database with different parameters.
+- Two sample databases have been provided for testing. One contains batches
+  composed of exactly one merkle tree. The other is for non full batches, to
+  show the verification process when a surveillance period requires data that is
+  not does not encompass a full merkle tree.
 - The sample database includes 8 users, with 5 days worth of data. There are 32
   entries of data, creating one merkle tree , and each data size is 10 bytes, to
   keep the size of the database file small.
+
 ```
 cd dbstarter
 ./build.sh
