@@ -51,6 +51,7 @@ int verify_file(char *file_name)
 	unsigned char *decode_buffer;
 	FILE *out_file;
 	int NUM = 0;
+	char **siblings;
 
 	/* Process the field char by char until reached end of segment.
 	 * The file is delimited by '!', so each section is unique.
@@ -89,13 +90,15 @@ int verify_file(char *file_name)
 			// enc_cont is the second field of the serialized batch
 			enc_cont_list = s_tokenize(fields[1],&count);
 
+			siblings = malloc(4096);
+
 			// the content needs to be reversed to be
 			// processed in the correct order
 			// enough space to hold 64 char*
 			rev_tokens = malloc(4096); 
 
 			for (int i = count-1, j = 0; i >= 0; i--, j++) {
-				//fprintf(stderr,"[] %s\n",enc_cont_list[i]);
+				fprintf(stderr,"[] %s\n",enc_cont_list[i]);
 				rev_tokens[j] = enc_cont_list[i]; //hash_list[i];
 			}
 
@@ -105,18 +108,18 @@ int verify_file(char *file_name)
 			// now that have content list, need to create hash of all content
 			hash_cont = malloc(4096);
 
-			
 			// only hash the encrypted content
 			for(int i = 0; i <= NUM-1; i++) {
 				hash_cont[i] = hash(rev_tokens[i]);
-				//fprintf(stderr,"() %s\n",hash_cont[i]);
+				fprintf(stderr,"() %s %s\n",hash_cont[i],rev_tokens[i]);
 			}
 
-			// fill in the rest of the content
+			/*
 			for(int i = NUM+1; i < count; i++) {
 				hash_cont[i] = rev_tokens[i];
-				//fprintf(stderr,"() %s\n",hash_cont[i]);
+				fprintf(stderr,"() %s\n",hash_cont[i]);
 			}
+			*/
 
 			fprintf(stderr,"\n");
 			//hash_cont[NUM] = '\0'; 
@@ -128,7 +131,7 @@ int verify_file(char *file_name)
 			if(NUM == 32) {
 				tree_root = get_root(hash_cont, 32);
 			} else if(NUM < 32) {
-				tree_root = get_root_from_siblings(hash_cont,NUM);
+				tree_root = get_root_from_siblings(hash_cont,siblings,NUM);
 			}
 
 			// verify the root hash is good

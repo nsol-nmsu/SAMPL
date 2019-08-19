@@ -24,7 +24,7 @@ char *get_root(char **hashes, int size)
 	} else if(size == 16) {
 		tree_height = 4;
 	}
-	printf("tree height = %d\n",tree_height);
+	//printf("tree height = %d\n",tree_height);
 	char **temp_leaves = malloc(1024);
 	char *child_leaf_1;
 	char *child_leaf_2;
@@ -53,7 +53,7 @@ char *get_root(char **hashes, int size)
 			strcat(temp_parent_leaf, child_leaf_2);
 			temp_parent_leaf[64] = '\0';
 			hashed_parent_leaf = hash(temp_parent_leaf);
-			fprintf(stderr,"hashed_parent_leaf: %s\n",hashed_parent_leaf);
+			//fprintf(stderr,"hashed_parent_leaf: %s\n",hashed_parent_leaf);
 			temp_leaves[parent_index] = malloc(33);
 			strncpy(temp_leaves[parent_index], hashed_parent_leaf, 32);
 			temp_leaves[parent_index++][32] = '\0';

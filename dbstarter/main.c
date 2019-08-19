@@ -246,7 +246,7 @@ void insert_DATA_ENTRY_and_MERKLE_ENTRY(size_t num_entries)
 		for (int j = 0; j < gen_stats.number_of_days; j++) {
 			//E_PER_DAY = rand() % 20 + 22; // rand between 22 and 42
 			//E_PER_DAY = 32;
-			E_PER_DAY = 35;
+			E_PER_DAY = 34;
 
 			/* loop how many entries per day */
 			for (int i = 0; i < E_PER_DAY; i++) {
@@ -270,7 +270,7 @@ void insert_DATA_ENTRY_and_MERKLE_ENTRY(size_t num_entries)
 				base64_encode(enc_cont,ct_len,&b64_enc_cont);
 				b64_enc_cont[enc_len] = '\0';
 
-				printf("[*] %d  \n",enc_len);
+				//printf("[*] %d  \n",enc_len);
 
 				temp = malloc(strlen(b64)+1);
 				sprintf(temp,"%s%d",b64,date);
@@ -341,7 +341,7 @@ void insert_DATA_ENTRY_and_MERKLE_ENTRY(size_t num_entries)
 	sqlite3_finalize(stmt);
 }
 
-void clean_up()
+void dbstarter_clean_up()
 {
 	printf("Closing the database\n");
 	sqlite3_close(db);
@@ -354,7 +354,7 @@ void clean_up()
 int main(int argc, char *argv[])
 {
 
-	open_db();
+	dbstarter_open_db();
 
 	if (argc < 2) {
 		printf("Please enter what to do\n");

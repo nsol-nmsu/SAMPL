@@ -13,7 +13,7 @@
  ************************************************/
 char *db_name = "test.db";
 
-int open_db()
+int dbstarter_open_db()
 {
 	int rc = 0;
 	char *zErrMsg = 0;

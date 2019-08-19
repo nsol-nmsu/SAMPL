@@ -186,6 +186,8 @@ void f(int target, struct header _header, char *payload)
 int main(int argc, char **argv)
 {
 
+	// merkle testing
+	/*
 	char **test_one = malloc(4096);
 	for(int i = 0; i < 32; i++) {
 		test_one[i] = malloc(11);
@@ -228,15 +230,16 @@ int main(int argc, char **argv)
 	printf("====================================\n");
 
 
-
-
-
-
-
-
-
 	// !!!!!
 	exit(0);
+
+
+	*/
+
+
+
+
+
 
 
 
