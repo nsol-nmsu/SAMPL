@@ -42,7 +42,7 @@ echo $LAWPID
 
 while [ -f "fin.lock" ]
 do 
-	sleep 2
+	sleep 1
 done
 
 

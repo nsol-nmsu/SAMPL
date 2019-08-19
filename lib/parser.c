@@ -54,6 +54,7 @@ int verify_file(char *file_name)
 	char **siblings;
 	char **target_list;
 	int target_count = 0;
+	char **t_list;
 
 	/* Process the field char by char until reached end of segment.
 	 * The file is delimited by '!', so each section is unique.
@@ -93,6 +94,7 @@ int verify_file(char *file_name)
 			enc_cont_list = s_tokenize(fields[1],&count);
 
 			siblings = malloc(4096);
+			t_list = malloc(4096);
 
 			// the content needs to be reversed to be
 			// processed in the correct order
@@ -101,14 +103,8 @@ int verify_file(char *file_name)
 
 			for (int i = count-1, j = 0; i >= 0; i--, j++) {
 				rev_tokens[j] = enc_cont_list[i]; //hash_list[i];
+				//fprintf(stderr,"$$ %s\n",rev_tokens[j]);
 			}
-
-			/*
-			fprintf(stderr,"===================\n");
-			for(int i = 0; i < count; i++) 
-				//fprintf(stderr,"^ %s\n",rev_tokens[i]);
-			fprintf(stderr,"===================\n");
-			*/
 
 			// now that have content list, need to create hash of all content
 			hash_cont = malloc(4096);
@@ -120,28 +116,27 @@ int verify_file(char *file_name)
 			for(int i = 0; i <= NUM-1; i++) {
 				hash_cont[i] = hash(rev_tokens[i]);
 				target_list[i] = hash(rev_tokens[i]);
-				fprintf(stderr,"hashing cont[%d] %s :: %s \n",i,rev_tokens[i],hash_cont[i]);
 			}
 			target_list[NUM] = '\0';
 
-			for(int i = NUM; i < count-NUM; i++) {
+			for(int i = 0; i < count-NUM; i++) {
 				hash_cont[i] = rev_tokens[i+NUM];
-				//fprintf(stderr,"(%d) %s\n",i,hash_cont[i]);
 			}
 
-			/*
-			fprintf(stderr,"==============================\n");
-			for(int i = 0; i < NUM; i++) 
-				fprintf(stderr,"$  %s\n",target_list[i]);
-			for(int i = 0; i < count-NUM; i++)
-				fprintf(stderr,"$$ %s\n",hash_cont[i]); 
-			fprintf(stderr,"==============================\n");
-			*/
-
-
+			if(count < 32) {
+				for(int i = 0, j = 16; i < 17; i++, j--) {
+					siblings[i] = hash_cont[j];
+				}
+				for(int i = 0, j = NUM-1; i < NUM; i++, j--) {
+					t_list[i] = target_list[j];
+				}
+			}
 
 			fprintf(stderr,"\n");
-			hash_cont[count] = '\0';
+			if(count < 32) {
+				hash_cont[17] = '\0';
+				siblings[17] = '\0';
+			}
 
 			/* with the hashes recreated from the encrypted content,
 			 * calculate the root hash of the merkle tree
@@ -149,12 +144,14 @@ int verify_file(char *file_name)
 			if(NUM == 32) {
 				tree_root = get_root(hash_cont, 32);
 			} else if(NUM < 32) {
-				tree_root = get_root_from_siblings(target_list,hash_cont,NUM);
+				//tree_root = get_root_from_siblings(target_list,hash_cont,NUM);
+				//tree_root = get_root_from_siblings(target_list,siblings,NUM);
+				tree_root = get_root_from_siblings(t_list,siblings,NUM);
 			}
 
 
-			fprintf(stderr,"1 root: %s\n",fields[0]);
-			fprintf(stderr,"2 root: %s\n",tree_root);
+			//fprintf(stderr,"1 root: %s\n",fields[0]);
+			//fprintf(stderr,"2 root: %s\n",tree_root);
 
 			// verify the root hash is good
 			printf("\n=============\n=============\n");

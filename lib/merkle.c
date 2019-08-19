@@ -53,7 +53,7 @@ char *get_root(char **hashes, int size)
 			strcat(temp_parent_leaf, child_leaf_2);
 			temp_parent_leaf[64] = '\0';
 			hashed_parent_leaf = hash(temp_parent_leaf);
-			fprintf(stderr,"hashed_parent_leaf: %s\n",hashed_parent_leaf);
+			//fprintf(stderr,"hashed_parent_leaf: %s\n",hashed_parent_leaf);
 			temp_leaves[parent_index] = malloc(33);
 			strncpy(temp_leaves[parent_index], hashed_parent_leaf, 32);
 			temp_leaves[parent_index++][32] = '\0';
@@ -146,7 +146,6 @@ char *get_siblings(char **target_hash_list, char **hashes)
 		}
 		parent_string = convert_to_string(_stack, 0);
 		converted_stack = convert_to_string(_target_stack, 0);
-		//printf("parent string: %s\nconverted_stack: %s\n",parent_string,converted_stack);
 		sprintf(to_return, "%s%s", converted_stack, parent_string);
 	}
 	else if (alignment == 1) {
@@ -163,12 +162,9 @@ char *get_siblings(char **target_hash_list, char **hashes)
 		}
 		parent_string = convert_to_string(_stack, 0);
 		converted_stack = convert_to_string(_target_stack, 0);
-		//printf("parent string: %s\nconverted_stack: %s\n",parent_string,converted_stack);
 		sprintf(to_return, "%s%s", parent_string, converted_stack);
 	}
 
-	//fprintf(stderr,"[ Finished in get siblings ]\n");
-	//fprintf(stderr,"[siblings in merkle] %s\n",to_return);
 	return to_return;
 }
 
@@ -178,7 +174,6 @@ char *get_root_from_siblings(char **target_hash_list, char **siblings, int num_t
 	char **one = target_hash_list;
 	char **two = siblings;
 
-	
 	char **three = malloc(4096);
 	for(int i = 0; i < 32; i++) {
 		three[i] = malloc(33);
@@ -192,34 +187,20 @@ char *get_root_from_siblings(char **target_hash_list, char **siblings, int num_t
 		sprintf(temp,"%s%s",*(two+1),*two);
 		h = hash(temp);
 		strcpy(three[x],h);
-		fprintf(stderr,"three[x] %s\n",three[x]);
 		one+=2;
 		two+=2;
 		x++;
 	}
 
-	//while(*two) {
-	for(int i = 0; i <= 16-num_target; i++) {
-		fprintf(stderr,"*two: %s\n",*two);
+
+	while(*two) {
 		strcpy(three[x],*two);
 		x++;
 		two++;
 	}
 
-	char **rev = malloc(4096);
-	for(int i = 0; i < 16; i++) 
-		rev[i] = malloc(33);
-
-	for(int i = 0,j=15;i < 16;i++,j--) {
-		strncpy(rev[i],three[j],33);
-	}
-
-	for(int i = 0; i < 16; i++) 
-		fprintf(stderr,"* %s\n",rev[i]);
-
-
 	three[16] = '\0';
-	char *root = get_root(rev,16);
+	char *root = get_root(three,16);
 	return root;
 
 

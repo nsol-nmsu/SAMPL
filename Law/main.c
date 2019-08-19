@@ -14,6 +14,7 @@
 #include "../lib/stack.h"
 #include "../lib/merkle.h"
 #include "../lib/token.h"
+#include "../lib/database.h"
 #include <stdio.h>
 
 /*
@@ -235,9 +236,6 @@ int main(int argc, char **argv)
 
 
 	*/
-
-
-
 
 
 

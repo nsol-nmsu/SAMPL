@@ -349,12 +349,6 @@ char *query_by_batch(int batch_num, char *A_i)
 	char *id_proof = query_USER_ACCOUNT(USER_id_proof, A_i);
 	char* cont_list = query_all_enc_cont_by_batch(batch_num,A_i);
 
-	char *hashes = query_all_hashes_by_batch(batch_num,A_i);
-	int count = 0;
-	char **h = s_tokenize(hashes,&count);
-	fprintf(stderr,"AAAAAAAAAAAAAAAAAA\n");
-	char *rr = get_root(h,32);
-
 	// get full size
 	size_t p_len = 0;
 	p_len += strlen(root_hash);
@@ -397,7 +391,17 @@ char *query_by_batch_notfull(int batch_num, char *A_i, int target_date)
 
 	/* Get the full list of HASHES to use to get the siblings */
 	char *cont_list_full = query_all_hashes_by_batch(batch_num,A_i);
+	
+	/* reverse the hashes
+	 * ordering is a little buggy, and requires odd re-ordering.
+	 * This will be updated in later release.
+	 */
 	int c = 0;
+	char **hh = s_tokenize(cont_list_full,&c);
+	char **rev = malloc(4096);
+	for(int i = 0, j = 31; i < 32; i++,j--) {
+		rev[i] = hh[j];	
+	}
 
 	/* tokenize the full list */
 	char **sep_list = s_tokenize(cont_list_full,&c);
@@ -409,7 +413,8 @@ char *query_by_batch_notfull(int batch_num, char *A_i, int target_date)
 	char **sep_sub_list = s_tokenize(sub_hash_list,&c);
 
 	/* Get the siblings using the subset */
-	char *siblings = get_siblings(sep_sub_list,sep_list);
+	//char *siblings = get_siblings(sep_sub_list,sep_list);
+	char *siblings = get_siblings(sep_sub_list,rev);
 
 	/* Build special section here for enforcer to parse */
 	size_t n_len = strlen(content_exact) + strlen(siblings) + 1;

@@ -4,6 +4,24 @@
 
 #include "stack.h"
 
+char *reva(char *string) 
+{
+	size_t len = strlen(string);
+	size_t l = len-1;
+	printf("len: %ld\n",len);
+	char *r = malloc(len+1);
+
+	for(int i = 0; i < len; i++) {
+		r[i] = string[l--];
+		//printf("%c\n",string[l]);
+	}
+	r[len] = '\0';
+
+	return r;
+
+}
+
+
 stack create_stack()
 {
 	stack n = (struct node *)malloc(sizeof(struct node));
@@ -69,8 +87,14 @@ char *convert_to_string(stack s, int order)
 	size_t len_2 = 0;
 	size_t len_3 = 0;
 
+	stack _rev_stack = create_stack();
+
 	while ((pop_res = pop(s)) != 0) {
 		len_2 += strlen(pop_res);
+
+		if(order == 1) {
+			push(_rev_stack,pop_res);
+		}
 
 		// if greater than available memory, realloc
 		if ((len_2 + len_3) > len_1) {
@@ -83,6 +107,10 @@ char *convert_to_string(stack s, int order)
 	}
 
 	// tokenize and reverse here ( not implemented )
+	if(order == 1) {
+		string_res = convert_to_string(_rev_stack,0);
+	}
+
 
 	return string_res;
 }

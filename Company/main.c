@@ -14,6 +14,7 @@
 #include "../lib/signal.h"
 #include "../lib/stack.h"
 #include "../lib/token.h"
+#include "../lib/merkle.h"
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
@@ -166,9 +167,6 @@ void f11()
 				batch = query_by_batch_notfull(j,t_name,start_date);
 			} else if (j == last_batch && !end_is_full) {
 				fprintf(stderr,"[!] special case for not full last!\n");
-				batch = query_by_batch(j,t_name);
-				fprintf(stderr,"=a==a==a=aa=a=a=a=a=a\n");
-				//fprintf(stderr,"\n\nbatch\n%s\n",batch);
 				batch = query_by_batch_notfull(j,t_name,end_date);
 			} else {
 				fprintf(stderr,"[!] Normal batch query\n");
@@ -248,6 +246,22 @@ void f(int target, struct header _header, char *payload)
  */
 int main(int argc, char **argv)
 {
+
+	// testing
+	/*
+	open_db();
+	char *aa = query_all_hashes_by_batch(2,"nameOne@gmail.com");
+	int count;
+	char **aaa = s_tokenize(aa,&count);
+	char *root = get_root(aaa,32);
+
+	printf("%s\n",root);
+
+
+	exit(0);
+	*/
+
+
 
 	start_signals();
 	sym_key_from_judge = malloc(33);
