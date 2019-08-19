@@ -53,7 +53,7 @@ char *get_root(char **hashes, int size)
 			strcat(temp_parent_leaf, child_leaf_2);
 			temp_parent_leaf[64] = '\0';
 			hashed_parent_leaf = hash(temp_parent_leaf);
-			//fprintf(stderr,"hashed_parent_leaf: %s\n",hashed_parent_leaf);
+			fprintf(stderr,"hashed_parent_leaf: %s\n",hashed_parent_leaf);
 			temp_leaves[parent_index] = malloc(33);
 			strncpy(temp_leaves[parent_index], hashed_parent_leaf, 32);
 			temp_leaves[parent_index++][32] = '\0';
@@ -177,6 +177,7 @@ char *get_root_from_siblings(char **target_hash_list, char **siblings, int num_t
 {
 	char **one = target_hash_list;
 	char **two = siblings;
+
 	
 	char **three = malloc(4096);
 	for(int i = 0; i < 32; i++) {
@@ -188,25 +189,37 @@ char *get_root_from_siblings(char **target_hash_list, char **siblings, int num_t
 	int x = 0;
 
 	while( *one && *two && strcmp(*one,*two) == 0) {
-		sprintf(temp,"%s%s",*two,*(two+1));
+		sprintf(temp,"%s%s",*(two+1),*two);
 		h = hash(temp);
 		strcpy(three[x],h);
-		printf("three[x] %s\n",three[x]);
+		fprintf(stderr,"three[x] %s\n",three[x]);
 		one+=2;
 		two+=2;
 		x++;
 	}
 
-	while(*two) {
+	//while(*two) {
+	for(int i = 0; i <= 16-num_target; i++) {
+		fprintf(stderr,"*two: %s\n",*two);
 		strcpy(three[x],*two);
 		x++;
 		two++;
 	}
-	for(int i = 0; i < 16; i++) {
-		printf("%s\n",three[i]);
+
+	char **rev = malloc(4096);
+	for(int i = 0; i < 16; i++) 
+		rev[i] = malloc(33);
+
+	for(int i = 0,j=15;i < 16;i++,j--) {
+		strncpy(rev[i],three[j],33);
 	}
 
-	char *root = get_root(three,16);
+	for(int i = 0; i < 16; i++) 
+		fprintf(stderr,"* %s\n",rev[i]);
+
+
+	three[16] = '\0';
+	char *root = get_root(rev,16);
 	return root;
 
 

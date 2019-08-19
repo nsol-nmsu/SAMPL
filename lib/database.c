@@ -349,6 +349,12 @@ char *query_by_batch(int batch_num, char *A_i)
 	char *id_proof = query_USER_ACCOUNT(USER_id_proof, A_i);
 	char* cont_list = query_all_enc_cont_by_batch(batch_num,A_i);
 
+	char *hashes = query_all_hashes_by_batch(batch_num,A_i);
+	int count = 0;
+	char **h = s_tokenize(hashes,&count);
+	fprintf(stderr,"AAAAAAAAAAAAAAAAAA\n");
+	char *rr = get_root(h,32);
+
 	// get full size
 	size_t p_len = 0;
 	p_len += strlen(root_hash);

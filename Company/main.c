@@ -166,6 +166,9 @@ void f11()
 				batch = query_by_batch_notfull(j,t_name,start_date);
 			} else if (j == last_batch && !end_is_full) {
 				fprintf(stderr,"[!] special case for not full last!\n");
+				batch = query_by_batch(j,t_name);
+				fprintf(stderr,"=a==a==a=aa=a=a=a=a=a\n");
+				//fprintf(stderr,"\n\nbatch\n%s\n",batch);
 				batch = query_by_batch_notfull(j,t_name,end_date);
 			} else {
 				fprintf(stderr,"[!] Normal batch query\n");

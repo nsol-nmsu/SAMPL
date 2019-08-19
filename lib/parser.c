@@ -52,6 +52,8 @@ int verify_file(char *file_name)
 	FILE *out_file;
 	int NUM = 0;
 	char **siblings;
+	char **target_list;
+	int target_count = 0;
 
 	/* Process the field char by char until reached end of segment.
 	 * The file is delimited by '!', so each section is unique.
@@ -98,31 +100,47 @@ int verify_file(char *file_name)
 			rev_tokens = malloc(4096); 
 
 			for (int i = count-1, j = 0; i >= 0; i--, j++) {
-				fprintf(stderr,"[] %s\n",enc_cont_list[i]);
 				rev_tokens[j] = enc_cont_list[i]; //hash_list[i];
 			}
 
-			// terminate the list of content
-			rev_tokens[NUM] = NULL;
+			/*
+			fprintf(stderr,"===================\n");
+			for(int i = 0; i < count; i++) 
+				//fprintf(stderr,"^ %s\n",rev_tokens[i]);
+			fprintf(stderr,"===================\n");
+			*/
 
 			// now that have content list, need to create hash of all content
 			hash_cont = malloc(4096);
 
+			// get the target hashes as a unique list
+			target_list = malloc(4096);
+
 			// only hash the encrypted content
 			for(int i = 0; i <= NUM-1; i++) {
 				hash_cont[i] = hash(rev_tokens[i]);
-				fprintf(stderr,"() %s %s\n",hash_cont[i],rev_tokens[i]);
+				target_list[i] = hash(rev_tokens[i]);
+				fprintf(stderr,"hashing cont[%d] %s :: %s \n",i,rev_tokens[i],hash_cont[i]);
+			}
+			target_list[NUM] = '\0';
+
+			for(int i = NUM; i < count-NUM; i++) {
+				hash_cont[i] = rev_tokens[i+NUM];
+				//fprintf(stderr,"(%d) %s\n",i,hash_cont[i]);
 			}
 
 			/*
-			for(int i = NUM+1; i < count; i++) {
-				hash_cont[i] = rev_tokens[i];
-				fprintf(stderr,"() %s\n",hash_cont[i]);
-			}
+			fprintf(stderr,"==============================\n");
+			for(int i = 0; i < NUM; i++) 
+				fprintf(stderr,"$  %s\n",target_list[i]);
+			for(int i = 0; i < count-NUM; i++)
+				fprintf(stderr,"$$ %s\n",hash_cont[i]); 
+			fprintf(stderr,"==============================\n");
 			*/
 
+
+
 			fprintf(stderr,"\n");
-			//hash_cont[NUM] = '\0'; 
 			hash_cont[count] = '\0';
 
 			/* with the hashes recreated from the encrypted content,
@@ -131,8 +149,12 @@ int verify_file(char *file_name)
 			if(NUM == 32) {
 				tree_root = get_root(hash_cont, 32);
 			} else if(NUM < 32) {
-				tree_root = get_root_from_siblings(hash_cont,siblings,NUM);
+				tree_root = get_root_from_siblings(target_list,hash_cont,NUM);
 			}
+
+
+			fprintf(stderr,"1 root: %s\n",fields[0]);
+			fprintf(stderr,"2 root: %s\n",tree_root);
 
 			// verify the root hash is good
 			printf("\n=============\n=============\n");
