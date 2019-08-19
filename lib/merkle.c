@@ -8,16 +8,23 @@
 #include "merkle.h"
 #include "stack.h"
 
-/* dumbly casts to an int, so merkle trees must be an exponent of 2 */
-int log_2(int x) { return (int)log(x) / log(2); }
+/* casts to an int, so merkle trees must be an exponent of 2 */
+int log_2(int x) { return ((int)log(x) / log(2)); }
 
 // size is how many hashes
 char *get_root(char **hashes, int size)
 {
-	double x = log(8);
+	//double x = log(8);
 	char **h = hashes;
 
-	int tree_height = log_2(size) + 1;
+	//int tree_height = log_2(size) + 1;
+	int tree_height = 0;
+	if(size == 32) {
+		tree_height = 5;
+	} else if(size == 16) {
+		tree_height = 4;
+	}
+	printf("tree height = %d\n",tree_height);
 	char **temp_leaves = malloc(1024);
 	char *child_leaf_1;
 	char *child_leaf_2;
@@ -37,8 +44,8 @@ char *get_root(char **hashes, int size)
 			//printf("merkle second for\n");
 			child_leaf_1 = h[index++];
 			child_leaf_2 = h[index++];
-			//printf("%s\n",child_leaf_1);
-			//printf("%s\n",child_leaf_2);
+			//fprintf(stderr," child leaf 1%s\n",child_leaf_1);
+			//fprintf(stderr," child leaf 2%s\n",child_leaf_2);
 
 			strncpy(temp_parent_leaf, child_leaf_1, 32);
 
@@ -46,6 +53,7 @@ char *get_root(char **hashes, int size)
 			strcat(temp_parent_leaf, child_leaf_2);
 			temp_parent_leaf[64] = '\0';
 			hashed_parent_leaf = hash(temp_parent_leaf);
+			fprintf(stderr,"hashed_parent_leaf: %s\n",hashed_parent_leaf);
 			temp_leaves[parent_index] = malloc(33);
 			strncpy(temp_leaves[parent_index], hashed_parent_leaf, 32);
 			temp_leaves[parent_index++][32] = '\0';
@@ -64,7 +72,7 @@ char *get_root(char **hashes, int size)
 
 char *get_siblings(char **target_hash_list, char **hashes)
 {
-	fprintf(stderr,"[ Starting in get siblings] \n");
+	//fprintf(stderr,"[ Starting in get siblings] \n");
 	char **t = target_hash_list;
 	int c_1 = 0, c_2 = 0;
 
@@ -108,7 +116,7 @@ char *get_siblings(char **target_hash_list, char **hashes)
 	// get the even number of target_hashes
 	if (((c_1) % 2) == 1)
 		c_1 = c_1 + 1;
-	printf("new c_1 ( # target_hashes ): %d\n", c_1);
+	//printf("new c_1 ( # target_hashes ): %d\n", c_1);
 
 	/* left aligned
 	 * Format: [#]target_hash,target_hash,sib_hash,sib_hash,sib_hash,sib_hash
@@ -119,16 +127,12 @@ char *get_siblings(char **target_hash_list, char **hashes)
 	// process based of alignment
 	// alignment: 0=left 1=right
 	//
-	char *front = malloc(100);
 	char *converted_stack;
-	char *rest;
 	char *parent_string;
 	stack _target_stack = create_stack();
 	char *to_return = malloc(4096);
 
 	if (alignment == 0) {
-		// set the front
-		//sprintf(front, "{%d}", c_1);
 
 		// get the targets from target_hash_list
 		for (int i = c_1 - 1; i >= 0; i--)
@@ -138,42 +142,72 @@ char *get_siblings(char **target_hash_list, char **hashes)
 		while (c_2 > (c_2 + 1) / 2) {
 			sprintf(parent, "%s%s", hashes[c_2--], hashes[c_2--]);
 			p_hash = hash(parent);
-			// printf("%s\n",p_hash);
-			//push(_stack, parent);
 			push(_stack,p_hash);
 		}
 		parent_string = convert_to_string(_stack, 0);
 		converted_stack = convert_to_string(_target_stack, 0);
+		//printf("parent string: %s\nconverted_stack: %s\n",parent_string,converted_stack);
 		sprintf(to_return, "%s%s", converted_stack, parent_string);
 	}
 	else if (alignment == 1) {
 
-		//sprintf(front, "[-%d]", c_1);
-
-		//printf("[debug] o_c_1: %d\n", o_c_1);
 		for (int i = o_c_1; i >= !(o_c_1 % 2); i--) {
-			// printf("tt: %s\n",target_hash_list[i]);
 			push(_target_stack, target_hash_list[i]);
 		}
 
 		int x = c_2 - c_1;
 		while (x > 0) {
 			sprintf(parent, "%s%s", hashes[x--], hashes[x--]);
-			push(_stack, parent);
-			// printf("parent = %s\n",parent);
+			p_hash = hash(parent);
+			push(_stack, p_hash);
 		}
 		parent_string = convert_to_string(_stack, 0);
 		converted_stack = convert_to_string(_target_stack, 0);
+		//printf("parent string: %s\nconverted_stack: %s\n",parent_string,converted_stack);
 		sprintf(to_return, "%s%s", parent_string, converted_stack);
 	}
 
-	fprintf(stderr,"[ Finished in get siblings ]\n");
-	fprintf(stderr,"[siblings in merkle] %s\n",to_return);
+	//fprintf(stderr,"[ Finished in get siblings ]\n");
+	//fprintf(stderr,"[siblings in merkle] %s\n",to_return);
 	return to_return;
 }
 
 
-char *get_root_from_siblings(char **target_hash_list, int num_target)
+char *get_root_from_siblings(char **target_hash_list, char **siblings, int num_target)
 {
+	char **one = target_hash_list;
+	char **two = siblings;
+	
+	char **three = malloc(4096);
+	for(int i = 0; i < 32; i++) {
+		three[i] = malloc(33);
+	}
+	char *temp = malloc(65);;
+	char *h;
+
+	int x = 0;
+
+	while( *one && *two && strcmp(*one,*two) == 0) {
+		sprintf(temp,"%s%s",*two,*(two+1));
+		h = hash(temp);
+		strcpy(three[x],h);
+		printf("three[x] %s\n",three[x]);
+		one+=2;
+		two+=2;
+		x++;
+	}
+
+	while(*two) {
+		strcpy(three[x],*two);
+		x++;
+		two++;
+	}
+	for(int i = 0; i < 16; i++) {
+		printf("%s\n",three[i]);
+	}
+
+	char *root = get_root(three,16);
+	return root;
+
 
 }

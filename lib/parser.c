@@ -95,6 +95,7 @@ int verify_file(char *file_name)
 			rev_tokens = malloc(4096); 
 
 			for (int i = count-1, j = 0; i >= 0; i--, j++) {
+				//fprintf(stderr,"[] %s\n",enc_cont_list[i]);
 				rev_tokens[j] = enc_cont_list[i]; //hash_list[i];
 			}
 
@@ -108,13 +109,16 @@ int verify_file(char *file_name)
 			// only hash the encrypted content
 			for(int i = 0; i <= NUM-1; i++) {
 				hash_cont[i] = hash(rev_tokens[i]);
+				//fprintf(stderr,"() %s\n",hash_cont[i]);
 			}
 
 			// fill in the rest of the content
 			for(int i = NUM+1; i < count; i++) {
 				hash_cont[i] = rev_tokens[i];
+				//fprintf(stderr,"() %s\n",hash_cont[i]);
 			}
 
+			fprintf(stderr,"\n");
 			//hash_cont[NUM] = '\0'; 
 			hash_cont[count] = '\0';
 

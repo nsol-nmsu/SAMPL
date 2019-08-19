@@ -12,6 +12,8 @@
 #include "../lib/server.h"
 #include "../lib/signal.h"
 #include "../lib/stack.h"
+#include "../lib/merkle.h"
+#include "../lib/token.h"
 #include <stdio.h>
 
 /*
@@ -183,6 +185,61 @@ void f(int target, struct header _header, char *payload)
  */
 int main(int argc, char **argv)
 {
+
+	char **test_one = malloc(4096);
+	for(int i = 0; i < 32; i++) {
+		test_one[i] = malloc(11);
+		gen_sym_key(test_one[i],10);
+	}
+
+	char **test_two = malloc(4096);
+	for(int i = 0; i < 32; i++) {
+		test_two[i] = hash(test_one[i]);	
+	}
+
+	for(int i = 0; i < 32; i++) {
+		//printf("%s\n",test_two[i]);
+	}
+
+	char *root = get_root(test_two,32);
+	printf("====================================\n");
+	printf("root: %s\n",root);
+	printf("====================================\n");
+
+
+	char **test_three = malloc(4096);
+	for(int i = 0; i < 32; i++) {
+		test_three[i] = malloc(33);
+	}
+
+	for(int i = 0; i < 2; i++) {
+		strcpy(test_three[i],test_two[i]);
+	}
+	test_three[2] = '\0';
+
+	char *siblings = get_siblings(test_three,test_two);
+
+	int count;
+	char **t_siblings = s_tokenize(siblings,&count);
+
+	char *sib_root = get_root_from_siblings(test_three,t_siblings,count);
+	printf("====================================\n");
+	printf("root: %s\n",sib_root);
+	printf("====================================\n");
+
+
+
+
+
+
+
+
+
+	// !!!!!
+	exit(0);
+
+
+
 	if (argc < 4) {
 		printf("[!] Need how many users to run\n");
 		printf("[!] Need how many days to run\n");
