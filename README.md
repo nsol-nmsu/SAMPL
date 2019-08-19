@@ -2,6 +2,9 @@
 
 - Implementation of SAMPL
 - Each entity in the network has their own working directory.
+- Within each directory of the Entitiy is their own main.c that contains their
+  logic. There is a Makefile to compile them.
+
 
 ## Quick Start
 
@@ -43,4 +46,4 @@ offset of people to run same tests with different subset of people }
   verification.
 
 
-## Each entitity
+

@@ -143,9 +143,6 @@ void f11()
 		first_batch = get_first_num_batch_by_date(start_date, t_name, &start_is_full);
 		last_batch = get_last_num_batch_by_date(end_date, t_name, &end_is_full);
 
-		fprintf(stderr,"[is_full first] %d\n",start_is_full);
-		fprintf(stderr,"[is_full last]  %d\n",end_is_full);
-
 		printf("[C Query] %s [batches] first: %d last: %d\n", t_name,
 			   first_batch, last_batch);
 
@@ -162,13 +159,10 @@ void f11()
 			 * will fall under the SO time period. 
 			 */
 			if(j == first_batch && !start_is_full) {
-				fprintf(stderr,"[!] special case for not full first!\n");
 				batch = query_by_batch_notfull(j,t_name,start_date);
 			} else if (j == last_batch && !end_is_full) {
-				fprintf(stderr,"[!] special case for not full last!\n");
 				batch = query_by_batch_notfull(j,t_name,end_date);
 			} else {
-				fprintf(stderr,"[!] Normal batch query\n");
 				batch = query_by_batch(j, t_name);
 			}
 

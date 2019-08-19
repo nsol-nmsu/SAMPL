@@ -85,7 +85,6 @@ int verify_file(char *file_name)
 			printf("%s\n", fields[2]);
 	
 			NUM = atoi(fields[6]);
-			fprintf(stderr,"[*******] %d\n",NUM);
 
 			// enc_cont is the second field of the serialized batch
 			enc_cont_list = s_tokenize(fields[1],&count);
@@ -95,9 +94,7 @@ int verify_file(char *file_name)
 			// enough space to hold 64 char*
 			rev_tokens = malloc(4096); 
 
-			fprintf(stderr,"*****  %d\n",count);
 			for (int i = count-1, j = 0; i >= 0; i--, j++) {
-				fprintf(stderr,"[enc cont list] %s\n",enc_cont_list[i]);
 				rev_tokens[j] = enc_cont_list[i]; //hash_list[i];
 			}
 
@@ -111,7 +108,6 @@ int verify_file(char *file_name)
 			// only hash the encrypted content
 			for(int i = 0; i <= NUM-1; i++) {
 				hash_cont[i] = hash(rev_tokens[i]);
-				fprintf(stderr,"[[]] %s %s\n",hash_cont[i],rev_tokens[i]);
 			}
 
 			for(int i = NUM+1; i < count; i++) {
@@ -121,10 +117,6 @@ int verify_file(char *file_name)
 			//hash_cont[NUM] = '\0'; 
 			hash_cont[count] = '\0';
 
-			for(int i = 0; i < count; i++) {
-				fprintf(stderr,"[[]]() %s\n",hash_cont[i]);
-			}
-			
 			/* with the hashes recreated from the encrypted content,
 			 * calculate the root hash of the merkle tree
 			 */

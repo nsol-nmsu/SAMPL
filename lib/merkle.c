@@ -168,43 +168,12 @@ char *get_siblings(char **target_hash_list, char **hashes)
 	}
 
 	fprintf(stderr,"[ Finished in get siblings ]\n");
+	fprintf(stderr,"[siblings in merkle] %s\n",to_return);
 	return to_return;
 }
 
 
 char *get_root_from_siblings(char **target_hash_list, int num_target)
 {
-	fprintf(stderr,"=================\n");
-	char **t = target_hash_list;
-	while(*t) {
-		fprintf(stderr,"%s\n",*t);
-		t++;
-	}
-	fprintf(stderr,"=================\n");
-
-	int n_t = (num_target % 2) ? num_target - 1 : num_target;
-	n_t /= 2;
-	fprintf(stderr,"$$$$$$ %d\n",n_t);
-
-	char *con = malloc(4098);
-	char **hashed_list = malloc(4098);
-	char *hashed;
-	int x = 0;
-	for(int i = 0; i < n_t; i+=2) {
-		sprintf(con,"%s%s",target_hash_list[i],target_hash_list[i+1]);
-		hashed = hash(con);
-		hashed_list[x] = malloc(33);
-		strncpy(hashed_list[x++],hashed,33);
-	}
-
-	for(int i = n_t*2; i < 16; i++) {
-		fprintf(stderr,"%d aaaaaaaaaaaaa\n",i);
-		hashed_list[x] = malloc(33);
-		strncpy(hashed_list[x++],target_hash_list[i],33);
-	}
-
-	char *root = get_root(hashed_list,16);
-	fprintf(stderr,"ahsdlfsdjf\n");
-	return root;
 
 }

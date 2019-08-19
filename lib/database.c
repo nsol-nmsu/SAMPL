@@ -318,13 +318,10 @@ char *query_all_hashes_by_batch_exact(int batch_num, char *A_i, int target_date)
 		printf("[sql query] good status from get all enc content\n");
 		while ((rc = sqlite3_step(sql_statement)) == SQLITE_ROW) {
 			result = (char *)sqlite3_column_text(sql_statement, 0);
-			concat_res = (char*)malloc(strlen(result)+100);
 			date = sqlite3_column_int(sql_statement,1);
-			sprintf(concat_res,"%s%d",result,date);
 			if(target_date == date)
-				push(_stack, concat_res);
+				push(_stack, result);
 			//free(result);
-			free(concat_res);
 		}
 	} else {
 		printf("[!!!] Query fail\n");
