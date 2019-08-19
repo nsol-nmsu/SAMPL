@@ -110,6 +110,7 @@ int verify_file(char *file_name)
 				hash_cont[i] = hash(rev_tokens[i]);
 			}
 
+			// fill in the rest of the content
 			for(int i = NUM+1; i < count; i++) {
 				hash_cont[i] = rev_tokens[i];
 			}
