@@ -17,5 +17,3 @@ judge:
 law:
 	$(MAKE) -C Law/
 
-
-
