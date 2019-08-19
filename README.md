@@ -8,16 +8,18 @@
 
 ## Quick Start
 
-### Set up the environment and build the source codes
+### Set up the environment and build the project
 
-- In the root
+- In the root directory
 
 ```
 mkdir obj
 cd lib && make
 cd ..
-./rebuild.sh
+make
+cp db/test-full32.db test.db
 ```
+
 
 - Two sample databases have been provided for testing. One contains batches
   composed of exactly one merkle tree. The other is for non full batches, to
@@ -29,10 +31,10 @@ cd ..
 
 ```
 cd dbstarter
-./build.sh
+make
 { optional: alter names.txt }
-./p --user
-./p --data { # now of days of survaillance } { Size of each data entry }
+./dbstarter --user
+./dbstarter --data { # now of days of survaillance } { Size of each data entry }
 
 ```
 - copy the generated database to the base directory to use
