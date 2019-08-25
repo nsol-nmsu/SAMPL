@@ -23,7 +23,7 @@ caller = sys.argv[1] # who called this, ie. company
 # set up the eth
 
 w3 = Web3(IPCProvider(caller+"/geth.ipc"))
-w3.personal.unlockAccount(w3.eth.coinbase,'password1')
+w3.geth.personal.unlockAccount(w3.eth.coinbase,'password1')
 
 
 ents = ["company","law","enforcer","judge"]
@@ -38,7 +38,7 @@ for ent in ents:
         ip = info['ip']
         attempts = 2
         while(attempts > 0):
-            status = w3.admin.addPeer(enode)
+            status = w3.geth.admin.addPeer(enode)
             if status == True:
                 print(f"[*] added peer at:{ip}")
                 break;

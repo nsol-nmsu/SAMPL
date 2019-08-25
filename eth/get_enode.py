@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 import socket
 import sys
-from web3 import Web3,IPCProvider
+from web3 import Web3,IPCProvider,geth
 
 if len(sys.argv) == 1:
     print("[!] For who ??   ./get_enode.py {entity}")
@@ -37,8 +37,9 @@ sock.close()
 
 # set the path here for each entity
 w3 = Web3(IPCProvider( name + "/geth.ipc"))
-w3.personal.unlockAccount(w3.eth.coinbase,'password1')
-enode = w3.admin.nodeInfo.enode
+#w3.geth.unlockAccount(w3.eth.coinbase,'password1')
+w3.geth.personal.unlockAccount(w3.eth.coinbase,'password1')
+enode = w3.geth.admin.node_info().enode
 s = enode.split('@')
 new_enode =  s[0] + "@" + host_ip
 
