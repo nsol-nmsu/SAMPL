@@ -4,12 +4,14 @@ import time
 
 # entity is us, the caller
 entity = sys.argv[1]
+filename = sys.argv[2]
+filename_2 = sys.argv[3]
 
 
 # read this in from tx_hash.txt instead ???
 #tx_hash = sys.argv[2]
 
-with open("tx_hash.txt","rb") as f:
+with open(filename,"rb") as f:
     tx_hash = f.read()
 
 
@@ -29,13 +31,13 @@ while True:
         print("[*] Found transaction: tx.input listed below...")
         print(bytes.fromhex(transaction.input[2:]).decode('ascii'))
         t = bytes.fromhex(transaction.input[2:]).decode('ascii')
-        with open("tx_input.txt","w") as f:
+        with open(filename_2,"w") as f:
             f.write(t)
-        # should write the transaction here..
-        # need the format of transaction
+
         break;
     else:
         time.sleep(2)
+
 
 
 

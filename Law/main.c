@@ -31,7 +31,6 @@
 
 /* the R_i for who to surviel */
 /* will need a way to read in these names  */
-// char* original_SR = "Austin";
 //
 // read in file here
 //
@@ -89,7 +88,13 @@ void f7()
 {
 	printf("[Law]      Write to BC step 8\n");
 
-	//system("python3 lib/python/eth_calls/write_t.py law test_data");
+	char *SR = malloc(strlen(payload_fields[0]) + strlen(payload_fields[1] + 10));
+	sprintf(SR,"%s %s",payload_fields[0],payload_fields[1]);
+	char *hash_SR = hash(SR);
+	char *to_write = malloc(strlen(hash_SR) + 100);
+	sprintf(to_write,"python lib/python/eth_calls/write_t.py company %s hash_SR.dat",hash_SR);
+
+	system(to_write);
 
 	memcpy(sym_key_from_judge, payload_fields[2], 32);
 	free(payload_fields[2]);
@@ -186,60 +191,6 @@ void f(int target, struct header _header, char *payload)
  */
 int main(int argc, char **argv)
 {
-
-	// merkle testing
-	/*
-	char **test_one = malloc(4096);
-	for(int i = 0; i < 32; i++) {
-		test_one[i] = malloc(11);
-		gen_sym_key(test_one[i],10);
-	}
-
-	char **test_two = malloc(4096);
-	for(int i = 0; i < 32; i++) {
-		test_two[i] = hash(test_one[i]);	
-	}
-
-	for(int i = 0; i < 32; i++) {
-		//printf("%s\n",test_two[i]);
-	}
-
-	char *root = get_root(test_two,32);
-	printf("====================================\n");
-	printf("root: %s\n",root);
-	printf("====================================\n");
-
-
-	char **test_three = malloc(4096);
-	for(int i = 0; i < 32; i++) {
-		test_three[i] = malloc(33);
-	}
-
-	for(int i = 0; i < 2; i++) {
-		strcpy(test_three[i],test_two[i]);
-	}
-	test_three[2] = '\0';
-
-	char *siblings = get_siblings(test_three,test_two);
-
-	int count;
-	char **t_siblings = s_tokenize(siblings,&count);
-
-	char *sib_root = get_root_from_siblings(test_three,t_siblings,count);
-	printf("====================================\n");
-	printf("root: %s\n",sib_root);
-	printf("====================================\n");
-
-
-	// !!!!!
-	exit(0);
-
-
-	*/
-
-
-
-
 
 	if (argc < 4) {
 		printf("[!] Need how many users to run\n");

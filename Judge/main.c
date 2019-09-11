@@ -58,8 +58,23 @@ void f5()
 	payload_fields[2] = malloc(33);
 	strncpy(payload_fields[2], sym_key, 32);
 
+	// encrypt the SO with the shared symmectric key
+	char enc_SO[strlen(payload_fields[0] + 100)];
+	fprintf(stderr,"ajsljfdslkj\n");
+	int ct_len = sym_encrypt(payload_fields[0],strlen(payload_fields[0]),sym_key,0,enc_SO);
+	char *b64;
+	base64_encode(enc_SO,ct_len,&b64);
+	// extra space for system call 
+	char *to_write = malloc(ct_len + 200);
+	b64[strlen(b64)-1] = '\0';
+	sprintf(to_write,"python lib/python/eth_calls/write_t.py company %s judge-so-tx-hash.dat", b64);
+	
 	printf("[Judge]    Write to BC, step 6\n");
-	//system("python3 lib/python/eth_calls/write_t.py judge test-data-is-here");
+
+	/* Write the SO to the ledger
+	 * BBBB
+	 */
+	system(to_write);
 
 	char *msg = build_packet(7, payload_fields, 0);
 	send_msg(msg, COMPANYIP, COMPANYPORT);

@@ -15,6 +15,7 @@
 #include "../lib/stack.h"
 #include "../lib/token.h"
 #include "../lib/merkle.h"
+#include "../lib/eth.h"
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
@@ -44,6 +45,8 @@ void f3()
 	 */
 	int count = 0;
 	char **R_is = s_tokenize(payload_fields[0], &count);
+
+	//char *search_tx("judge-so-tx-hash.dat");
 
 	/* query the A_i for each R_i, push results to stack
 	 * turn this stack to a string, make this string payload_fields[0]
@@ -99,7 +102,7 @@ void f11()
 	printf("[Company] Write to BC step 12\n");
 	//fprintf(stderr, "[Company] Doing query for data\n");
 
-	//system("python3 lib/python/eth_calls/write_t.py company temp_data");
+	//system("python lib/python/eth_calls/write_t.py company temp_data");
 
 	/* Get the start and end date from the payload fields
 	 */
@@ -246,21 +249,9 @@ void f(int target, struct header _header, char *payload)
 int main(int argc, char **argv)
 {
 
-	// testing
-	/*
-	open_db();
-	char *aa = query_all_hashes_by_batch(2,"nameOne@gmail.com");
-	int count;
-	char **aaa = s_tokenize(aa,&count);
-	char *root = get_root(aaa,32);
-
-	printf("%s\n",root);
-
+	char *w = search_tx("judge-so-tx-hash.dat","test.dat");
 
 	exit(0);
-	*/
-
-
 
 	start_signals();
 	sym_key_from_judge = malloc(33);

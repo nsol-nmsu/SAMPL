@@ -17,3 +17,6 @@ rm Law/Law.log
 rm Company/Company.log
 rm Judge/Judge.log
 rm Enforcer/Enforcer.log
+
+rm judge-so-tx-hash.dat
+rm hash_SR.dat
