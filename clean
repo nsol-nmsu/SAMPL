@@ -17,6 +17,10 @@ rm Law/Law.log
 rm Company/Company.log
 rm Judge/Judge.log
 rm Enforcer/Enforcer.log
+rm tx-hash.txt
+rm finished-tx.txt
+rm company_tx.txt
+rm enf-tx.txt
 
 rm judge-so-tx-hash.dat
 rm hash_SR.dat
