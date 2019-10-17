@@ -17,4 +17,6 @@ judge:
 law:
 	$(MAKE) -C Law/
 
+run:
+	./run.sh 1 1 0
 

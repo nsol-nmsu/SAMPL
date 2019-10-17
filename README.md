@@ -42,6 +42,16 @@ make
   names.txt that was used to generate the database. If nothing was touched, it
   should be set**
 
+- Before Running, if testing with ethereum, make sure ethereum is running.
+- Currently, tests are configured to simulate by running on a local machine, so
+  ethereum will also be running on a local machine. To get ethereum up and
+  running:
+```
+cd eth/
+./start_all.sh
+```
+- Now ethereum is running on the local machine, one ethereum node for each
+  entity in the network.
 - Now run test scenarion on the local machine
 ```
 ./run.sh { # of people under survaillance } { # of days of survaillance } {

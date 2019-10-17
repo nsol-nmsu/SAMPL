@@ -113,7 +113,7 @@ void f7()
 void f15()
 {
 
-	//system("python3 lib/python/eth_calls/write_t.py law test-dta");
+	system("python3 lib/python/eth_calls/write_t.py company test-data finished-tx.txt");
 
 	printf("!!! Finished\n");
 	fprintf(stderr, "[*] Finished, logs should be written\n");

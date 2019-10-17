@@ -2,10 +2,9 @@
 import sys
 import time
 
-# entity is us, the caller
-entity = sys.argv[1]
-filename = sys.argv[2]
-filename_2 = sys.argv[3]
+entity = sys.argv[1] # entity is us, the caller
+filename = sys.argv[2] # is the file that has the tx_hash
+filename_2 = sys.argv[3] # is the file to write the data out to
 
 
 # read this in from tx_hash.txt instead ???

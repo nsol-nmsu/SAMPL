@@ -60,7 +60,6 @@ void f5()
 
 	// encrypt the SO with the shared symmectric key
 	char enc_SO[strlen(payload_fields[0] + 100)];
-	fprintf(stderr,"ajsljfdslkj\n");
 	int ct_len = sym_encrypt(payload_fields[0],strlen(payload_fields[0]),sym_key,0,enc_SO);
 	char *b64;
 	base64_encode(enc_SO,ct_len,&b64);

@@ -48,7 +48,7 @@ void f9()
 {
 	printf("[Enforcer] Write to BC step 10\n");
 
-	//system("python3 lib/python/eth_calls/write_t.py enforcer test-data");
+	system("python3 lib/python/eth_calls/write_t.py company test-data tx-hash.txt");
 
 	char *msg = build_packet(11, payload_fields, 0);
 	send_msg(msg, COMPANYIP, COMPANYPORT);
@@ -63,7 +63,7 @@ void f13()
 {
 	printf("[Enforcer] Write to BC step 14\n");
 
-	// system("python3 lib/python/eth_calls/write_t.py enforcer test-data");
+	 system("python3 lib/python/eth_calls/write_t.py company test-data enf-tx.txt");
 
 	// char* file_name = "test-out.txt";
 	char *file_name = "test_dummy.txt";

@@ -100,9 +100,18 @@ void f7()
 void f11()
 {
 	printf("[Company] Write to BC step 12\n");
+
+	/* Verify the A_pub appears in original transaction from the judge, using
+	 * the transaction hash in ethereum to verify
+	 * -- Search all A_pub in the original SO
+	 */
+
+	//system("python lib/python/eth_calls/search_tx.py company judge-so-tx-hash.txt")
 	//fprintf(stderr, "[Company] Doing query for data\n");
 
-	//system("python lib/python/eth_calls/write_t.py company temp_data");
+	/* Write to the blockchain hash(SRR)
+	 */
+	system("python lib/python/eth_calls/write_t.py company hashSRR company_tx.txt");
 
 	/* Get the start and end date from the payload fields
 	 */
@@ -117,7 +126,7 @@ void f11()
 
 	int status = open_db();
 	int count;
-	/* This works */
+
 	char **A_i_to_query = s_tokenize(payload_fields[0], &count);
 
 	stack _stack = create_stack();
@@ -248,10 +257,6 @@ void f(int target, struct header _header, char *payload)
  */
 int main(int argc, char **argv)
 {
-
-	char *w = search_tx("judge-so-tx-hash.dat","test.dat");
-
-	exit(0);
 
 	start_signals();
 	sym_key_from_judge = malloc(33);
